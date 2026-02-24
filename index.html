@@ -10,8 +10,8 @@
     <style>
         /* --- CUSTOM TAILWIND-STYLE CSS --- */
         :root {
-            --color-primary: #FF8C00;
-            --color-secondary: #E91E63;
+            --color-primary: #FF9500;
+            --color-secondary: #FF2D92;
             --color-tertiary: #9C27B0;
             --font-family: 'Poppins', sans-serif;
         }
@@ -29,17 +29,17 @@
             overflow-x: hidden;
         }
 
-        /* Gradients */
+        /* Gradients - Updated to match logo */
         .bg-gradient-brand {
-            background: linear-gradient(135deg, #FF8C00 0%, #E91E63 50%, #9C27B0 100%);
+            background: linear-gradient(135deg, #FFB800 0%, #FF6B00 25%, #FF2D92 75%, #9C27B0 100%);
         }
         
         .bg-gradient-soft {
-            background: linear-gradient(135deg, rgba(255,140,0,0.1) 0%, rgba(233,30,99,0.1) 100%);
+            background: linear-gradient(135deg, rgba(255,184,0,0.1) 0%, rgba(255,45,146,0.1) 100%);
         }
 
         .text-gradient {
-            background: linear-gradient(to right, #FF8C00, #E91E63);
+            background: linear-gradient(to right, #FF6B00, #FF2D92);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -95,7 +95,7 @@
 
         .input-field:focus {
             border-color: var(--color-secondary);
-            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 45, 146, 0.2);
         }
 
         .btn {
@@ -112,15 +112,15 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #FF8C00 0%, #E91E63 100%);
+            background: linear-gradient(135deg, #FF6B00 0%, #FF2D92 100%);
             color: white;
-            box-shadow: 0 4px 6px -1px rgba(233, 30, 99, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(255, 45, 146, 0.3);
         }
 
         .btn-primary:hover {
             opacity: 0.9;
             transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(233, 30, 99, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(255, 45, 146, 0.4);
         }
 
         .btn-secondary {
@@ -145,6 +145,31 @@
             position: sticky;
             top: 0;
             z-index: 50;
+        }
+
+        /* Logo Styles */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #1f2937;
+            line-height: 1.2;
+        }
+
+        .logo-subtext {
+            font-size: 0.75rem;
+            color: #6b7280;
         }
 
         /* Animations */
@@ -207,6 +232,7 @@
         .badge-red { background-color: #fee2e2; color: #991b1b; }
         .badge-yellow { background-color: #fef3c7; color: #92400e; }
         .badge-blue { background-color: #dbeafe; color: #1e40af; }
+        .badge-purple { background-color: #e9d5ff; color: #7c3aed; }
 
         /* Modal */
         .modal-overlay {
@@ -243,10 +269,10 @@
         /* Toggle Switch */
         .toggle-checkbox:checked {
             right: 0;
-            border-color: #E91E63;
+            border-color: #FF2D92;
         }
         .toggle-checkbox:checked + .toggle-label {
-            background-color: #E91E63;
+            background-color: #FF2D92;
         }
         
         /* Custom Scrollbar */
@@ -283,6 +309,12 @@
             background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
             transform: rotate(45deg);
         }
+
+        /* SVG Logo */
+        .kanankiri-logo {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -291,10 +323,27 @@
     <div id="loginView" class="min-h-screen flex flex-col items-center justify-center bg-gradient-brand p-4">
         <div class="card w-full max-w-md animate-fade-in text-center">
             <div class="mb-6">
-                <div class="w-20 h-20 bg-gradient-brand rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg">
-                    KK <span style="font-size: 1.2rem; margin-left: 4px;">🍽️</span>
+                <!-- New Logo -->
+                <div class="logo-icon mx-auto mb-4">
+                    <svg class="kanankiri-logo" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Left half (Orange-Yellow) -->
+                        <path d="M10 30 C10 15, 25 10, 35 10 L50 10 L50 25 L35 25 C30 25, 25 28, 25 30 C25 32, 30 35, 35 35 L50 35 L50 50 L35 50 C25 50, 10 45, 10 30 Z" fill="url(#orangeGradient)"/>
+                        <!-- Right half (Pink-Purple) -->
+                        <path d="M90 30 C90 45, 75 50, 65 50 L50 50 L50 35 L65 35 C70 35, 75 32, 75 30 C75 28, 70 25, 65 25 L50 25 L50 10 L65 10 C75 10, 90 15, 90 30 Z" fill="url(#pinkGradient)"/>
+                        <!-- Gradients -->
+                        <defs>
+                            <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#FFB800;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF6B00;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#FF2D92;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
-                <h1 class="text-2xl font-bold text-gray-800">PT Kanan Kiri Mediaworks</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Kanan Kiri</h1>
                 <p class="text-gray-500">Lunch Ordering System</p>
             </div>
 
@@ -314,18 +363,6 @@
                     Sign In
                 </button>
             </form>
-
-            <div class="mt-6 pt-6 border-t border-gray-100">
-                <p class="text-xs text-gray-400 mb-2">Demo Accounts:</p>
-                <div class="grid grid-cols-1 gap-2 text-xs text-gray-500">
-                    <div class="bg-gray-50 p-2 rounded">
-                        <span class="font-bold">Admin:</span> dindatiur@kanankiricreative.com / 123456
-                    </div>
-                    <div class="bg-gray-50 p-2 rounded">
-                        <span class="font-bold">Employee:</span> budi@kanankiricreative.com / 123456
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -335,12 +372,26 @@
         <!-- Navbar -->
         <nav class="navbar flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center text-white font-bold shadow-md">
-                    KK
+                <!-- Small Logo -->
+                <div class="w-10 h-10">
+                    <svg class="kanankiri-logo" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 30 C10 15, 25 10, 35 10 L50 10 L50 25 L35 25 C30 25, 25 28, 25 30 C25 32, 30 35, 35 35 L50 35 L50 50 L35 50 C25 50, 10 45, 10 30 Z" fill="url(#orangeGradientNav)"/>
+                        <path d="M90 30 C90 45, 75 50, 65 50 L50 50 L50 35 L65 35 C70 35, 75 32, 75 30 C75 28, 70 25, 65 25 L50 25 L50 10 L65 10 C75 10, 90 15, 90 30 Z" fill="url(#pinkGradientNav)"/>
+                        <defs>
+                            <linearGradient id="orangeGradientNav" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#FFB800;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF6B00;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="pinkGradientNav" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#FF2D92;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
                 <div>
                     <h1 class="font-bold text-gray-800 leading-tight">Lunch Order</h1>
-                    <p class="text-xs text-gray-500">PT Kanan Kiri Mediaworks</p>
+                    <p class="text-xs text-gray-500">Kanan Kiri Mediaworks</p>
                 </div>
             </div>
             
@@ -888,7 +939,6 @@
 
             // Simple check: if current time > 16:00, cutoff is passed for today (for tomorrow's lunch)
             // Logic: If now is today after 16:00, tomorrow's order is locked.
-            // But usually cutoff is "Today 16:00 for Tomorrow's lunch".
             
             const isCutoffPassed = now.getHours() >= 16;
 
