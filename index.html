@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunch Order | PT Kanan Kiri Mediaworks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CUSTOM TAILWIND-STYLE CSS --- */
+        :root {
+            --color-primary: #FF8C00;
+            --color-secondary: #E91E63;
+            --color-tertiary: #9C27B0;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: #f3f4f6;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Gradients */
+        .bg-gradient-brand {
+            background: linear-gradient(135deg, #FF8C00 0%, #E91E63 50%, #9C27B0 100%);
+        }
+        
+        .bg-gradient-soft {
+            background: linear-gradient(135deg, rgba(255,140,0,0.1) 0%, rgba(233,30,99,0.1) 100%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #FF8C00, #E91E63);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Layout Utilities */
+        .min-h-screen { min-height: 100vh; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .hidden { display: none !important; }
+        .block { display: block; }
+        .grid { display: grid; }
+        
+        /* Spacing */
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .m-4 { margin: 1rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* Components */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF8C00 0%, #E91E63 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .btn-success { background-color: #10B981; color: white; }
+        .btn-danger { background-color: #EF4444; color: white; }
+        .btn-info { background-color: #3B82F6; color: white; }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f9fafb;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        tr:hover td {
+            background-color: #f9fafb;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-green { background-color: #d1fae5; color: #065f46; }
+        .badge-red { background-color: #fee2e2; color: #991b1b; }
+        .badge-yellow { background-color: #fef3c7; color: #92400e; }
+        .badge-blue { background-color: #dbeafe; color: #1e40af; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Responsive Grid */
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .md\:flex-row { flex-direction: row; }
+        }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #E91E63;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #E91E63;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8; 
+        }
+
+        /* Stats Card */
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= LOGIN VIEW ================= -->
+    <div id="loginView" class="min-h-screen flex flex-col items-center justify-center bg-gradient-brand p-4">
+        <div class="card w-full max-w-md animate-fade-in text-center">
+            <div class="mb-6">
+                <div class="w-20 h-20 bg-gradient-brand rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg">
+                    KK <span style="font-size: 1.2rem; margin-left: 4px;">🍽️</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">PT Kanan Kiri Mediaworks</h1>
+                <p class="text-gray-500">Lunch Ordering System</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4 text-left">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="loginEmail" class="input-field" placeholder="name@kanankiricreative.com" required>
+                    <p class="text-xs text-gray-400 mt-1">*Must use @kanankiricreative.com domain</p>
+                </div>
+                
+                <div class="mb-6 text-left">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="input-field" placeholder="••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full text-lg py-3">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-gray-100">
+                <p class="text-xs text-gray-400 mb-2">Demo Accounts:</p>
+                <div class="grid grid-cols-1 gap-2 text-xs text-gray-500">
+                    <div class="bg-gray-50 p-2 rounded">
+                        <span class="font-bold">Admin:</span> dindatiur@kanankiricreative.com / 123456
+                    </div>
+                    <div class="bg-gray-50 p-2 rounded">
+                        <span class="font-bold">Employee:</span> budi@kanankiricreative.com / 123456
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APPLICATION (Hidden by default) ================= -->
+    <div id="appView" class="hidden min-h-screen flex flex-col">
+        
+        <!-- Navbar -->
+        <nav class="navbar flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center text-white font-bold shadow-md">
+                    KK
+                </div>
+                <div>
+                    <h1 class="font-bold text-gray-800 leading-tight">Lunch Order</h1>
+                    <p class="text-xs text-gray-500">PT Kanan Kiri Mediaworks</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden md:block">
+                    <p id="userNameDisplay" class="text-sm font-bold text-gray-800">User Name</p>
+                    <p id="userRoleDisplay" class="text-xs text-gray-500">Role</p>
+                </div>
+                <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors">
+                    <i class="fas fa-sign-out-alt text-xl"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+            
+            <!-- EMPLOYEE VIEW -->
+            <div id="employeeView" class="hidden animate-fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Order Form -->
+                    <div class="md:col-span-2">
+                        <div class="card mb-6">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h2 class="text-xl font-bold text-gray-800">Lunch for Tomorrow</h2>
+                                    <p class="text-gray-500" id="tomorrowDateDisplay">Loading date...</p>
+                                </div>
+                                <div id="cutoffTimer" class="text-right">
+                                    <span class="text-xs text-gray-400 block">Cutoff Time</span>
+                                    <span class="font-bold text-red-500">16:00 WIB</span>
+                                </div>
+                            </div>
+
+                            <div id="orderFormContainer">
+                                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-start gap-3">
+                                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                                    <p class="text-sm text-blue-700">
+                                        Please submit your lunch preference before 16:00 WIB. 
+                                        After cutoff time, the form will be locked for tomorrow's order.
+                                    </p>
+                                </div>
+
+                                <form id="lunchOrderForm" onsubmit="handleOrderSubmit(event)">
+                                    <div class="mb-6">
+                                        <label class="block text-sm font-medium text-gray-700 mb-3">Will you join lunch tomorrow?</label>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <label class="cursor-pointer relative">
+                                                <input type="radio" name="willEat" value="true" class="peer sr-only" checked onchange="togglePreference(true)">
+                                                <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-check-circle text-2xl mb-2 text-gray-300 peer-checked:text-green-500"></i>
+                                                    <div class="font-bold text-gray-700 peer-checked:text-green-700">Yes, I'll Eat</div>
+                                                </div>
+                                            </label>
+                                            <label class="cursor-pointer relative">
+                                                <input type="radio" name="willEat" value="false" class="peer sr-only" onchange="togglePreference(false)">
+                                                <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-times-circle text-2xl mb-2 text-gray-300 peer-checked:text-red-500"></i>
+                                                    <div class="font-bold text-gray-700 peer-checked:text-red-700">No, Skip</div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div id="preferenceSection" class="mb-6 animate-fade-in">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Preference</label>
+                                        <select id="preference" class="input-field bg-white">
+                                            <option value="Normal">Normal</option>
+                                            <option value="Tidak Pedas">Tidak Pedas (No Spicy)</option>
+                                            <option value="Vegetarian">Vegetarian</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-6">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Allergy Notes (Optional)</label>
+                                        <textarea id="allergy" rows="2" class="input-field" placeholder="e.g., Shrimp, Nuts..."></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-full py-3 text-lg">
+                                        Submit Order
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Status Message (Shown after submit or cutoff) -->
+                            <div id="orderStatusMessage" class="hidden text-center py-8">
+                                <div id="statusIcon" class="text-6xl mb-4">✅</div>
+                                <h3 id="statusTitle" class="text-2xl font-bold mb-2">Order Submitted!</h3>
+                                <p id="statusDesc" class="text-gray-500 mb-6">You have successfully ordered for tomorrow.</p>
+                                <button onclick="resetOrderForm()" class="btn btn-secondary">
+                                    <i class="fas fa-edit mr-2"></i> Change Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Info -->
+                    <div class="md:col-span-1">
+                        <!-- User Info Card -->
+                        <div class="card mb-6 bg-gradient-soft border-none">
+                            <h3 class="font-bold text-gray-800 mb-4">My Profile</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Department</span>
+                                    <span id="empDept" class="font-semibold">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Location</span>
+                                    <span id="empLoc" class="font-semibold">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- History Card -->
+                        <div class="card">
+                            <h3 class="font-bold text-gray-800 mb-4">Recent History (30 Days)</h3>
+                            <div id="historyList" class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                                <!-- History items injected here -->
+                                <div class="text-center text-gray-400 py-4 text-sm">No history found</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN VIEW -->
+            <div id="adminView" class="hidden animate-fade-in">
+                <!-- Tabs -->
+                <div class="flex gap-4 mb-6 border-b border-gray-200">
+                    <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="pb-3 px-2 font-semibold text-gray-800 border-b-2 border-transparent hover:text-pink-600 transition-colors admin-tab active-tab">
+                        Order Dashboard
+                    </button>
+                    <button onclick="switchAdminTab('users')" id="tab-users" class="pb-3 px-2 font-semibold text-gray-500 border-b-2 border-transparent hover:text-pink-600 transition-colors admin-tab">
+                        User Management
+                    </button>
+                </div>
+
+                <!-- DASHBOARD TAB -->
+                <div id="adminDashboard" class="block">
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="stat-card bg-gradient-to-br from-green-400 to-green-600">
+                            <div class="relative z-10">
+                                <p class="text-green-100 text-sm font-medium">Total YES</p>
+                                <h3 class="text-3xl font-bold" id="statYes">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card bg-gradient-to-br from-red-400 to-red-600">
+                            <div class="relative z-10">
+                                <p class="text-red-100 text-sm font-medium">Total NO</p>
+                                <h3 class="text-3xl font-bold" id="statNo">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card bg-gradient-to-br from-yellow-400 to-yellow-600">
+                            <div class="relative z-10">
+                                <p class="text-yellow-100 text-sm font-medium">Not Filled</p>
+                                <h3 class="text-3xl font-bold" id="statPending">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card bg-gradient-to-br from-blue-400 to-blue-600">
+                            <div class="relative z-10">
+                                <p class="text-blue-100 text-sm font-medium">Total Employees</p>
+                                <h3 class="text-3xl font-bold" id="statTotal">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="card mb-6">
+                        <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
+                            <div class="flex gap-2 w-full md:w-auto">
+                                <input type="date" id="adminDateFilter" class="input-field" onchange="renderAdminDashboard()">
+                                <select id="adminDeptFilter" class="input-field" onchange="renderAdminDashboard()">
+                                    <option value="">All Departments</option>
+                                    <option value="Creative">Creative</option>
+                                    <option value="Tech">Tech</option>
+                                    <option value="HR">HR</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Operations">Operations</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openVendorModal()" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane mr-2"></i> Send to Vendor
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sub Tabs -->
+                        <div class="flex gap-2 mb-4 border-b border-gray-100 pb-2">
+                            <button onclick="setOrderSubTab('all')" class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 order-subtab active" data-filter="all">All</button>
+                            <button onclick="setOrderSubTab('yes')" class="px-3 py-1 rounded-full text-sm font-medium text-gray-600 hover:bg-green-50 hover:text-green-600 order-subtab" data-filter="yes">YES</button>
+                            <button onclick="setOrderSubTab('no')" class="px-3 py-1 rounded-full text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 order-subtab" data-filter="no">NO</button>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Dept</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Preference</th>
+                                        <th>Allergy</th>
+                                        <th>Submitted</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminOrderTable">
+                                    <!-- Rows injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USER MANAGEMENT TAB -->
+                <div id="adminUsers" class="hidden">
+                    <div class="card">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold">Employee Management</h2>
+                            <button onclick="openUserModal()" class="btn btn-primary">
+                                <i class="fas fa-plus mr-2"></i> Add Employee
+                            </button>
+                        </div>
+
+                        <div class="mb-4">
+                            <input type="text" id="userSearch" placeholder="Search employees..." class="input-field" onkeyup="renderUserTable()">
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Location</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody">
+                                    <!-- Rows injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Edit Order Modal (Admin) -->
+    <div id="editOrderModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('editOrderModal')">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold mb-4">Edit Order</h3>
+            <form id="editOrderForm" onsubmit="saveOrderEdit(event)">
+                <input type="hidden" id="editOrderId">
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Employee</label>
+                    <input type="text" id="editOrderUserName" class="input-field bg-gray-100" disabled>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Status</label>
+                    <select id="editOrderStatus" class="input-field">
+                        <option value="true">Yes (Eat)</option>
+                        <option value="false">No (Skip)</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Preference</label>
+                    <select id="editOrderPref" class="input-field">
+                        <option value="Normal">Normal</option>
+                        <option value="Tidak Pedas">Tidak Pedas</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Allergy</label>
+                    <input type="text" id="editOrderAllergy" class="input-field">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-1">Reason for Change <span class="text-red-500">*</span></label>
+                    <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..."></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeModal('editOrderModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Modal (Add/Edit) -->
+    <div id="userModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('userModal')">
+        <div class="modal-content">
+            <h3 id="userModalTitle" class="text-xl font-bold mb-4">Add Employee</h3>
+            <form id="userForm" onsubmit="saveUser(event)">
+                <input type="hidden" id="editUserId">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Full Name</label>
+                        <input type="text" id="userName" class="input-field" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" id="userEmail" class="input-field" required placeholder="@kanankiricreative.com">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Department</label>
+                        <select id="userDept" class="input-field">
+                            <option value="Creative">Creative</option>
+                            <option value="Tech">Tech</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Location</label>
+                        <select id="userLoc" class="input-field">
+                            <option value="Jakarta">Jakarta</option>
+                            <option value="Bandung">Bandung</option>
+                            <option value="Surabaya">Surabaya</option>
+                            <option value="Remote">Remote</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Role</label>
+                        <select id="userRole" class="input-field">
+                            <option value="employee">Employee</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Password</label>
+                        <input type="text" id="userPassword" class="input-field" placeholder="Default: 123456">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeModal('userModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vendor Modal -->
+    <div id="vendorModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('vendorModal')">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 class="text-xl font-bold mb-2">Vendor Summary</h3>
+            <p class="text-sm text-gray-500 mb-4" id="vendorDateDisplay"></p>
+
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center p-3 bg-green-50 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600" id="vendorTotalYes">0</div>
+                    <div class="text-xs text-green-800">Total YES</div>
+                </div>
+                <div class="text-center p-3 bg-yellow-50 rounded-lg">
+                    <div class="text-2xl font-bold text-yellow-600" id="vendorNoSpicy">0</div>
+                    <div class="text-xs text-yellow-800">No Spicy</div>
+                </div>
+                <div class="text-center p-3 bg-purple-50 rounded-lg">
+                    <div class="text-2xl font-bold text-purple-600" id="vendorVeg">0</div>
+                    <div class="text-xs text-purple-800">Vegetarian</div>
+                </div>
+            </div>
+
+            <label class="block text-sm font-medium mb-2">Generated Text:</label>
+            <textarea id="vendorText" class="input-field font-mono text-sm bg-gray-50 mb-4" rows="6" readonly></textarea>
+
+            <div class="flex gap-2">
+                <button onclick="copyVendorText()" class="btn btn-secondary flex-1">
+                    <i class="fas fa-copy mr-2"></i> Copy to Clipboard
+                </button>
+                <a id="mailtoLink" href="#" class="btn btn-info flex-1 text-center">
+                    <i class="fas fa-envelope mr-2"></i> Open Email Client
+                </a>
+                <button onclick="exportCSV()" class="btn btn-primary flex-1">
+                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 transition-transform duration-300 z-50 flex items-center gap-3">
+        <i class="fas fa-check-circle text-green-400"></i>
+        <span id="toastMsg">Operation successful</span>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- DATA & STATE MANAGEMENT ---
+        
+        // Initialize Data if empty
+        const initData = () => {
+            if (!localStorage.getItem('kk_users')) {
+                const defaultUsers = [
+                    {
+                        id: 'u1',
+                        name: 'Dinda Tiur',
+                        email: 'dindatiur@kanankiricreative.com',
+                        password: '123456',
+                        department: 'HR',
+                        location: 'Jakarta',
+                        role: 'admin',
+                        isActive: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'u2',
+                        name: 'Budi Santoso',
+                        email: 'budi@kanankiricreative.com',
+                        password: '123456',
+                        department: 'Tech',
+                        location: 'Bandung',
+                        role: 'employee',
+                        isActive: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'u3',
+                        name: 'Ani Wijaya',
+                        email: 'ani@kanankiricreative.com',
+                        password: '123456',
+                        department: 'Creative',
+                        location: 'Jakarta',
+                        role: 'employee',
+                        isActive: true,
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('kk_users', JSON.stringify(defaultUsers));
+                localStorage.setItem('kk_orders', JSON.stringify([]));
+            }
+        };
+
+        const getUsers = () => JSON.parse(localStorage.getItem('kk_users') || '[]');
+        const getOrders = () => JSON.parse(localStorage.getItem('kk_orders') || '[]');
+        const saveUsers = (users) => localStorage.setItem('kk_users', JSON.stringify(users));
+        const saveOrders = (orders) => localStorage.setItem('kk_orders', JSON.stringify(orders));
+
+        let currentUser = null;
+        let currentAdminTab = 'dashboard';
+        let currentOrderFilter = 'all';
+
+        // --- AUTHENTICATION ---
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+
+            // Domain validation
+            if (!email.endsWith('@kanankiricreative.com')) {
+                showToast('Invalid domain. Use @kanankiricreative.com', 'error');
+                return;
+            }
+
+            const users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password && u.isActive);
+
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('appView').classList.remove('hidden');
+                
+                // Update UI
+                document.getElementById('userNameDisplay').textContent = user.name;
+                document.getElementById('userRoleDisplay').textContent = user.role === 'admin' ? 'Administrator' : 'Employee';
+                
+                if (user.role === 'admin') {
+                    document.getElementById('adminView').classList.remove('hidden');
+                    document.getElementById('employeeView').classList.add('hidden');
+                    renderAdminDashboard();
+                } else {
+                    document.getElementById('employeeView').classList.remove('hidden');
+                    document.getElementById('adminView').classList.add('hidden');
+                    initEmployeeView();
+                }
+                showToast(`Welcome, ${user.name}!`);
+            } else {
+                showToast('Invalid credentials or inactive account', 'error');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('appView').classList.add('hidden');
+            document.getElementById('loginView').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+        }
+
+        // --- EMPLOYEE VIEW LOGIC ---
+
+        function initEmployeeView() {
+            // Set tomorrow's date
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('tomorrowDateDisplay').textContent = tomorrow.toLocaleDateString('id-ID', options);
+
+            // Set profile info
+            document.getElementById('empDept').textContent = currentUser.department;
+            document.getElementById('empLoc').textContent = currentUser.location;
+
+            checkExistingOrder();
+            renderHistory();
+        }
+
+        function checkExistingOrder() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateStr = tomorrow.toISOString().split('T')[0];
+            
+            const orders = getOrders();
+            const existingOrder = orders.find(o => o.userId === currentUser.id && o.date === dateStr);
+
+            const now = new Date();
+            const cutoff = new Date();
+            cutoff.setHours(16, 0, 0, 0); // 16:00 WIB (assuming server time is WIB or we adjust)
+
+            // Simple check: if current time > 16:00, cutoff is passed for today (for tomorrow's lunch)
+            // Logic: If now is today after 16:00, tomorrow's order is locked.
+            // But usually cutoff is "Today 16:00 for Tomorrow's lunch".
+            
+            const isCutoffPassed = now.getHours() >= 16;
+
+            const formContainer = document.getElementById('orderFormContainer');
+            const statusMsg = document.getElementById('orderStatusMessage');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDesc = document.getElementById('statusDesc');
+            const statusIcon = document.getElementById('statusIcon');
+
+            if (isCutoffPassed && !existingOrder) {
+                formContainer.classList.add('hidden');
+                statusMsg.classList.remove('hidden');
+                statusIcon.textContent = '⏰';
+                statusTitle.textContent = 'Cutoff Time Passed';
+                statusDesc.textContent = 'You missed the 16:00 WIB deadline for tomorrow\'s lunch.';
+                statusTitle.className = 'text-2xl font-bold mb-2 text-red-500';
+                return;
+            }
+
+            if (existingOrder) {
+                formContainer.classList.add('hidden');
+                statusMsg.classList.remove('hidden');
+                if (existingOrder.willEat) {
+                    statusIcon.textContent = '🍱';
+                    statusTitle.textContent = 'You are joining!';
+                    statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Allergy: ${existingOrder.allergy || '-'}`;
+                    statusTitle.className = 'text-2xl font-bold mb-2 text-green-600';
+                } else {
+                    statusIcon.textContent = '❌';
+                    statusTitle.textContent = 'You skipped lunch';
+                    statusDesc.textContent = 'See you tomorrow!';
+                    statusTitle.className = 'text-2xl font-bold mb-2 text-gray-600';
+                }
+            } else {
+                formContainer.classList.remove('hidden');
+                statusMsg.classList.add('hidden');
+            }
+        }
+
+        function togglePreference(isYes) {
+            const section = document.getElementById('preferenceSection');
+            if (isYes) {
+                section.classList.remove('hidden');
+                section.classList.add('animate-fade-in');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            
+            const willEat = document.querySelector('input[name="willEat"]:checked').value === 'true';
+            const preference = willEat ? document.getElementById('preference').value : 'N/A';
+            const allergy = document.getElementById('allergy').value;
+
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateStr = tomorrow.toISOString().split('T')[0];
+
+            const orders = getOrders();
+            
+            // Remove existing order for this date if any (shouldn't happen due to UI checks, but safety first)
+            const filteredOrders = orders.filter(o => !(o.userId === currentUser.id && o.date === dateStr));
+
+            const newOrder = {
+                id: 'ord_' + Date.now(),
+                userId: currentUser.id,
+                date: dateStr,
+                willEat: willEat,
+                preference: preference,
+                allergy: allergy,
+                submittedAt: new Date().toISOString(),
+                updatedAt: null,
+                updatedBy: null,
+                updateReason: null
+            };
+
+            filteredOrders.push(newOrder);
+            saveOrders(filteredOrders);
+            
+            showToast('Order submitted successfully!');
+            checkExistingOrder();
+            renderHistory();
+        }
+
+        function resetOrderForm() {
+            // Only allow reset if before cutoff
+            const now = new Date();
+            if (now.getHours() >= 16) {
+                showToast('Cannot change order after 16:00 WIB', 'error');
+                return;
+            }
+            
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateStr = tomorrow.toISOString().split('T')[0];
+            
+            let orders = getOrders();
+            orders = orders.filter(o => !(o.userId === currentUser.id && o.date === dateStr));
+            saveOrders(orders);
+            
+            checkExistingOrder();
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const orders = getOrders()
+                .filter(o => o.userId === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 10); // Last 10 entries
+
+            if (orders.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">No history found</div>';
+                return;
+            }
+
+            list.innerHTML = orders.map(o => {
+                const dateObj = new Date(o.date);
+                const dateStr = dateObj.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                const statusColor = o.willEat ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
+                const statusText = o.willEat ? 'YES' : 'NO';
+                
+                return `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <div>
+                            <div class="font-bold text-gray-700 text-sm">${dateStr}</div>
+                            <div class="text-xs text-gray-500">${o.preference}</div>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- ADMIN VIEW LOGIC ---
+
+        function switchAdminTab(tab) {
+            currentAdminTab = tab;
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('adminUsers').classList.add('hidden');
+            document.getElementById('tab-dashboard').classList.remove('active-tab', 'border-pink-500', 'text-pink-600');
+            document.getElementById('tab-users').classList.remove('active-tab', 'border-pink-500', 'text-pink-600');
+            
+            document.getElementById(tab === 'dashboard' ? 'adminDashboard' : 'adminUsers').classList.remove('hidden');
+            const activeBtn = document.getElementById(tab === 'dashboard' ? 'tab-dashboard' : 'tab-users');
+            activeBtn.classList.add('active-tab', 'border-pink-500', 'text-pink-600');
+            activeBtn.classList.remove('text-gray-500');
+            
+            if (tab === 'dashboard') renderAdminDashboard();
+            if (tab === 'users') renderUserTable();
+        }
+
+        function setOrderSubTab(filter) {
+            currentOrderFilter = filter;
+            document.querySelectorAll('.order-subtab').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.add('bg-gray-800', 'text-white');
+                    btn.classList.remove('bg-gray-100', 'text-gray-600');
+                } else {
+                    btn.classList.remove('bg-gray-800', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-600');
+                }
+            });
+            renderAdminDashboard();
+        }
+
+        function renderAdminDashboard() {
+            const dateFilter = document.getElementById('adminDateFilter').value;
+            const deptFilter = document.getElementById('adminDeptFilter').value;
+            
+            // Default to tomorrow if no date selected
+            const targetDate = dateFilter || (() => {
+                const t = new Date();
+                t.setDate(t.getDate() + 1);
+                return t.toISOString().split('T')[0];
+            })();
+
+            const users = getUsers().filter(u => u.isActive);
+            const orders = getOrders().filter(o => o.date === targetDate);
+            
+            // Map orders to users
+            const userOrders = users.map(u => {
+                const order = orders.find(o => o.userId === u.id);
+                return { ...u, order };
+            });
+
+            // Filter by dept
+            let filtered = userOrders;
+            if (deptFilter) {
+                filtered = filtered.filter(u => u.department === deptFilter);
+            }
+
+            // Filter by subtab
+            if (currentOrderFilter === 'yes') filtered = filtered.filter(u => u.order && u.order.willEat);
+            if (currentOrderFilter === 'no') filtered = filtered.filter(u => u.order && !u.order.willEat);
+
+            // Stats
+            const totalYes = userOrders.filter(u => u.order && u.order.willEat).length;
+            const totalNo = userOrders.filter(u => u.order && !u.order.willEat).length;
+            const totalPending = userOrders.filter(u => !u.order).length;
+
+            document.getElementById('statYes').textContent = totalYes;
+            document.getElementById('statNo').textContent = totalNo;
+            document.getElementById('statPending').textContent = totalPending;
+            document.getElementById('statTotal').textContent = users.length;
+
+            // Table
+            const tbody = document.getElementById('adminOrderTable');
+            tbody.innerHTML = filtered.map(u => {
+                const hasOrder = !!u.order;
+                const status = !hasOrder ? '<span class="badge badge-yellow">Pending</span>' : 
+                               u.order.willEat ? '<span class="badge badge-green">YES</span>' : 
+                               '<span class="badge badge-red">NO</span>';
+                
+                return `
+                    <tr>
+                        <td>
+                            <div class="font-medium text-gray-900">${u.name}</div>
+                            <div class="text-xs text-gray-500">${u.email}</div>
+                        </td>
+                        <td>${u.department}</td>
+                        <td>${u.location}</td>
+                        <td>${status}</td>
+                        <td>${hasOrder ? u.order.preference : '-'}</td>
+                        <td>${hasOrder ? u.order.allergy || '-' : '-'}</td>
+                        <td class="text-xs">${hasOrder ? new Date(u.order.submittedAt).toLocaleString('id-ID') : '-'}</td>
+                        <td>
+                            <button onclick="openEditOrder('${u.id}', '${targetDate}')" class="text-blue-600 hover:text-blue-800 mr-2" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ${hasOrder ? `
+                            <button onclick="deleteOrder('${u.order.id}')" class="text-red-600 hover:text-red-800" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- ADMIN: USER MANAGEMENT ---
+
+        function renderUserTable() {
+            const search = document.getElementById('userSearch').value.toLowerCase();
+            const users = getUsers().filter(u => 
+                u.isActive && (u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search))
+            );
+
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td class="font-medium">${u.name}</td>
+                    <td class="text-xs">${u.email}</td>
+                    <td>${u.department}</td>
+                    <td>${u.location}</td>
+                    <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role}</span></td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td>
+                        <button onclick="editUser('${u.id}')" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteUser('${u.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openUserModal() {
+            document.getElementById('userModalTitle').textContent = 'Add Employee';
+            document.getElementById('userForm').reset();
+            document.getElementById('editUserId').value = '';
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        function editUser(id) {
+            const users = getUsers();
+            const u = users.find(user => user.id === id);
+            if (!u) return;
+
+            document.getElementById('userModalTitle').textContent = 'Edit Employee';
+            document.getElementById('editUserId').value = u.id;
+            document.getElementById('userName').value = u.name;
+            document.getElementById('userEmail').value = u.email;
+            document.getElementById('userDept').value = u.department;
+            document.getElementById('userLoc').value = u.location;
+            document.getElementById('userRole').value = u.role;
+            document.getElementById('userPassword').value = u.password;
+            
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        function saveUser(e) {
+            e.preventDefault();
+            const id = document.getElementById('editUserId').value;
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const dept = document.getElementById('userDept').value;
+            const loc = document.getElementById('userLoc').value;
+            const role = document.getElementById('userRole').value;
+            const password = document.getElementById('userPassword').value || '123456';
+
+            if (!email.endsWith('@kanankiricreative.com')) {
+                showToast('Email must use @kanankiricreative.com domain', 'error');
+                return;
+            }
+
+            let users = getUsers();
+
+            if (id) {
+                // Edit
+                const idx = users.findIndex(u => u.id === id);
+                if (idx !== -1) {
+                    users[idx] = { ...users[idx], name, email, department: dept, location: loc, role, password };
+                }
+            } else {
+                // Add
+                if (users.find(u => u.email === email)) {
+                    showToast('Email already exists', 'error');
+                    return;
+                }
+                users.push({
+                    id: 'u_' + Date.now(),
+                    name, email, password, department: dept, location: loc, role,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                });
+            }
+
+            saveUsers(users);
+            closeModal('userModal');
+            renderUserTable();
+            showToast(id ? 'Employee updated' : 'Employee added');
+        }
+
+        function deleteUser(id) {
+            if (!confirm('Are you sure? This will soft delete the user.')) return;
+            let users = getUsers();
+            const idx = users.findIndex(u => u.id === id);
+            if (idx !== -1) {
+                users[idx].isActive = false;
+                saveUsers(users);
+                renderUserTable();
+                showToast('User deactivated');
+            }
+        }
+
+        // --- ADMIN: ORDER MANAGEMENT ---
+
+        function openEditOrder(userId, date) {
+            const users = getUsers();
+            const user = users.find(u => u.id === userId);
+            const orders = getOrders();
+            const order = orders.find(o => o.userId === userId && o.date === date);
+
+            document.getElementById('editOrderId').value = order ? order.id : 'new';
+            document.getElementById('editOrderUserName').value = user.name;
+            document.getElementById('editOrderStatus').value = order ? (order.willEat ? 'true' : 'false') : 'true';
+            document.getElementById('editOrderPref').value = order ? order.preference : 'Normal';
+            document.getElementById('editOrderAllergy').value = order ? order.allergy : '';
+            document.getElementById('editOrderReason').value = '';
+            
+            // Store context for saving
+            document.getElementById('editOrderForm').dataset.userId = userId;
+            document.getElementById('editOrderForm').dataset.date = date;
+
+            document.getElementById('editOrderModal').classList.remove('hidden');
+        }
+
+        function saveOrderEdit(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('editOrderId').value;
+            const userId = document.getElementById('editOrderForm').dataset.userId;
+            const date = document.getElementById('editOrderForm').dataset.date;
+            const willEat = document.getElementById('editOrderStatus').value === 'true';
+            const preference = document.getElementById('editOrderPref').value;
+            const allergy = document.getElementById('editOrderAllergy').value;
+            const reason = document.getElementById('editOrderReason').value;
+
+            if (!reason) {
+                alert('Audit reason is required');
+                return;
+            }
+
+            let orders = getOrders();
+            
+            if (orderId !== 'new') {
+                // Update existing
+                const idx = orders.findIndex(o => o.id === orderId);
+                if (idx !== -1) {
+                    orders[idx] = {
+                        ...orders[idx],
+                        willEat, preference, allergy,
+                        updatedAt: new Date().toISOString(),
+                        updatedBy: currentUser.name,
+                        updateReason: reason
+                    };
+                }
+            } else {
+                // Create new (if admin adds for user who hasn't filled)
+                orders.push({
+                    id: 'ord_' + Date.now(),
+                    userId, date, willEat, preference, allergy,
+                    submittedAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: currentUser.name,
+                    updateReason: reason
+                });
+            }
+
+            saveOrders(orders);
+            closeModal('editOrderModal');
+            renderAdminDashboard();
+            showToast('Order updated successfully');
+        }
+
+        function deleteOrder(orderId) {
+            if (!confirm('Delete this order?')) return;
+            let orders = getOrders().filter(o => o.id !== orderId);
+            saveOrders(orders);
+            renderAdminDashboard();
+            showToast('Order deleted');
+        }
+
+        // --- VENDOR INTEGRATION ---
+
+        function openVendorModal() {
+            const dateFilter = document.getElementById('adminDateFilter').value;
+            const targetDate = dateFilter || (() => {
+                const t = new Date();
+                t.setDate(t.getDate() + 1);
+                return t.toISOString().split('T')[0];
+            })();
+
+            document.getElementById('vendorDateDisplay').textContent = `Date: ${targetDate}`;
+
+            const orders = getOrders().filter(o => o.date === targetDate && o.willEat);
+            
+            const totalYes = orders.length;
+            const noSpicy = orders.filter(o => o.preference === 'Tidak Pedas').length;
+            const veg = orders.filter(o => o.preference === 'Vegetarian').length;
+
+            document.getElementById('vendorTotalYes').textContent = totalYes;
+            document.getElementById('vendorNoSpicy').textContent = noSpicy;
+            document.getElementById('vendorVeg').textContent = veg;
+
+            // Generate Text
+            const text = `ORDER LUNCH - PT Kanan Kiri Mediaworks
+Date: ${targetDate}
+Total: ${totalYes} pax
+
+Details:
+- Normal: ${totalYes - noSpicy - veg} pax
+- Tidak Pedas: ${noSpicy} pax
+- Vegetarian: ${veg} pax
+
+Notes: Please deliver to office by 12:00 PM.`;
+            
+            document.getElementById('vendorText').value = text;
+
+            // Mailto
+            document.getElementById('mailtoLink').href = `mailto:vendor@example.com?subject=Lunch Order ${targetDate}&body=${encodeURIComponent(text)}`;
+
+            document.getElementById('vendorModal').classList.remove('hidden');
+        }
+
+        function copyVendorText() {
+            const copyText = document.getElementById("vendorText");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            navigator.clipboard.writeText(copyText.value);
+            showToast('Copied to clipboard!');
+        }
+
+        function exportCSV() {
+            const dateFilter = document.getElementById('adminDateFilter').value;
+            const targetDate = dateFilter || (() => {
+                const t = new Date();
+                t.setDate(t.getDate() + 1);
+                return t.toISOString().split('T')[0];
+            })();
+
+            const users = getUsers().filter(u => u.isActive);
+            const orders = getOrders().filter(o => o.date === targetDate);
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Name,Department,Location,Status,Preference,Allergy\n";
+
+            users.forEach(u => {
+                const order = orders.find(o => o.userId === u.id);
+                const row = [
+                    u.name,
+                    u.department,
+                    u.location,
+                    order ? (order.willEat ? 'YES' : 'NO') : 'PENDING',
+                    order ? order.preference : '',
+                    order ? (order.allergy || '') : ''
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `lunch_order_${targetDate}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- UTILS ---
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const icon = toast.querySelector('i');
+            
+            toastMsg.textContent = msg;
+            if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle text-red-400';
+            } else {
+                icon.className = 'fas fa-check-circle text-green-400';
+            }
+
+            toast.classList.remove('translate-y-20');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20');
+            }, 3000);
+        }
+
+        // Initialize
+        initData();
+        
+        // Set default date filter to tomorrow
+        const tmr = new Date();
+        tmr.setDate(tmr.getDate() + 1);
+        document.getElementById('adminDateFilter').value = tmr.toISOString().split('T')[0];
+
+    </script>
+</body>
+</html>
