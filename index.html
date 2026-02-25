@@ -270,6 +270,15 @@
             background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
             transform: rotate(45deg);
         }
+
+        .debug-info {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body>
@@ -294,13 +303,20 @@
                 <div class="mb-6 text-left">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <input type="password" id="loginPassword" class="input-field" placeholder="••••••" required>
-                    <p class="text-xs text-gray-400 mt-1">*Password default sama dengan NIK</p>
+                    <p class="text-xs text-gray-400 mt-1">*Password default sama dengan NIK (Admin: 123456)</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-full text-lg py-3">
                     Sign In
                 </button>
             </form>
+
+            <div class="debug-info">
+                <p><strong>Test Login:</strong></p>
+                <p>Admin → NIK: <code>92318</code> | Pass: <code>123456</code></p>
+                <p>Karyawan → NIK: <code>92301</code> | Pass: <code>92301</code></p>
+                <button onclick="resetAllData()" class="btn btn-secondary w-full mt-2 text-sm">Reset Data (Kalau Error)</button>
+            </div>
         </div>
     </div>
 
@@ -711,8 +727,32 @@
             { nik: '92418', name: 'Lola Juliadrini', role: 'employee' }
         ];
 
+        // Fungsi untuk reset semua data
+        function resetAllData() {
+            localStorage.removeItem('kk_users');
+            localStorage.removeItem('kk_orders');
+            initData();
+            showToast('Data berhasil direset! Silakan refresh halaman.');
+        }
+
         const initData = () => {
-            if (!localStorage.getItem('kk_users')) {
+            // Cek apakah data sudah ada dan valid (menggunakan NIK)
+            const existing = localStorage.getItem('kk_users');
+            let isValid = false;
+            
+            if (existing) {
+                try {
+                    const parsed = JSON.parse(existing);
+                    // Cek apakah data pertama punya property 'nik'
+                    if (parsed.length > 0 && parsed[0].nik) {
+                        isValid = true;
+                    }
+                } catch(e) {
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
                 const defaultUsers = allEmployees.map((emp, index) => ({
                     id: 'u' + (index + 1),
                     nik: emp.nik,
@@ -725,6 +765,7 @@
                 }));
                 localStorage.setItem('kk_users', JSON.stringify(defaultUsers));
                 localStorage.setItem('kk_orders', JSON.stringify([]));
+                console.log('Data initialized with', defaultUsers.length, 'users');
             }
         };
 
@@ -742,10 +783,15 @@
             const nik = document.getElementById('loginNik').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            console.log('Login attempt:', nik, password);
+
             const users = getUsers();
+            console.log('Total users:', users.length);
+            
             const user = users.find(u => u.nik === nik && u.password === password && u.isActive);
 
             if (user) {
+                console.log('Login success:', user.name);
                 currentUser = user;
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('appView').classList.remove('hidden');
@@ -764,6 +810,7 @@
                 }
                 showToast(`Selamat datang, ${user.name}!`);
             } else {
+                console.log('Login failed');
                 showToast('NIK atau password salah', 'error');
             }
         }
@@ -1280,6 +1327,7 @@ Catatan: Mohon antar ke kantor pukul 12:00 WIB.`;
             }, 3000);
         }
 
+        // Initialize saat halaman load
         initData();
         
         const tmr = new Date();
