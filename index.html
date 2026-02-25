@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lunch Order | PT Kanan Kiri Mediaworks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --color-primary: #FF9500;
-            --color-secondary: #FF2D92;
-            --color-tertiary: #9C27B0;
-            --font-family: 'Poppins', sans-serif;
+            --color-primary: #FF6B35;
+            --color-secondary: #F7931E;
+            --color-accent: #C41E3A;
+            --color-dark: #1a1a2e;
+            --color-gray: #64748b;
+            --color-light: #f8fafc;
+            --font-primary: 'Inter', sans-serif;
+            --font-display: 'Playfair Display', serif;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
         * {
@@ -22,24 +30,40 @@
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: #f3f4f6;
-            color: #1f2937;
+            font-family: var(--font-primary);
+            background-color: #f1f5f9;
+            color: #1e293b;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
+        /* Corporate Gradient Background */
         .bg-gradient-brand {
-            background: linear-gradient(135deg, #FFB800 0%, #FF6B00 25%, #FF2D92 75%, #9C27B0 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-gradient-brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
         }
         
         .bg-gradient-soft {
-            background: linear-gradient(135deg, rgba(255,184,0,0.1) 0%, rgba(255,45,146,0.1) 100%);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(236, 72, 153, 0.08) 100%);
         }
 
         .text-gradient {
-            background: linear-gradient(to right, #FF6B00, #FF2D92);
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .min-h-screen { min-height: 100vh; }
@@ -64,81 +88,114 @@
         .mr-2 { margin-right: 0.5rem; }
         .mx-auto { margin-left: auto; margin-right: auto; }
 
+        /* Corporate Card Styling */
         .card {
             background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
             padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
         
         .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(139, 92, 246, 0.3);
         }
 
         .input-field {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
             font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.2s;
             outline: none;
+            background-color: #fafafa;
         }
 
         .input-field:focus {
-            border-color: var(--color-secondary);
-            box-shadow: 0 0 0 3px rgba(255, 45, 146, 0.2);
+            border-color: #8B5CF6;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
         }
 
+        .input-field::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Corporate Button Styling */
         .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             border: none;
             font-family: inherit;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.025em;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #FF6B00 0%, #FF2D92 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
             color: white;
-            box-shadow: 0 4px 6px -1px rgba(255, 45, 146, 0.3);
+            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.5);
         }
 
         .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(255, 45, 146, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
 
         .btn-secondary {
-            background-color: #f3f4f6;
-            color: #374151;
-            border: 1px solid #d1d5db;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1.5px solid #e2e8f0;
         }
 
         .btn-secondary:hover {
-            background-color: #e5e7eb;
+            background-color: #e2e8f0;
+            border-color: #cbd5e1;
         }
 
-        .btn-success { background-color: #10B981; color: white; }
-        .btn-danger { background-color: #EF4444; color: white; }
-        .btn-info { background-color: #3B82F6; color: white; }
+        .btn-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.23);
+        }
+        
+        .btn-danger { 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+        }
+        .btn-info { 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+        }
 
+        /* Corporate Navbar */
         .navbar {
-            background: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(139, 92, 246, 0.1);
             padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 50;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
         }
 
         .logo-img {
@@ -146,88 +203,130 @@
             width: auto;
             object-fit: contain;
             margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         .logo-img-small {
-            height: 40px;
+            height: 45px;
             width: auto;
             object-fit: contain;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
         .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out forwards;
         }
 
         .table-container {
             overflow-x: auto;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            font-size: 0.9rem;
         }
 
         th {
-            background-color: #f9fafb;
-            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%);
+            padding: 1rem 1.5rem;
             font-weight: 600;
-            color: #374151;
+            color: #6b21a8;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            border-bottom: 2px solid #e9d5ff;
         }
 
         td {
             padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 0.875rem;
-            color: #4b5563;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-weight: 500;
         }
 
         tr:hover td {
-            background-color: #f9fafb;
+            background-color: #faf5ff;
         }
 
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Corporate Badges */
         .badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.375rem 0.875rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 600;
+            letter-spacing: 0.025em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
-        .badge-green { background-color: #d1fae5; color: #065f46; }
-        .badge-red { background-color: #fee2e2; color: #991b1b; }
-        .badge-yellow { background-color: #fef3c7; color: #92400e; }
-        .badge-blue { background-color: #dbeafe; color: #1e40af; }
-        .badge-purple { background-color: #e9d5ff; color: #7c3aed; }
+        
+        .badge-green { 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+        .badge-red { 
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+        .badge-yellow { 
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+        .badge-blue { 
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #6d28d9;
+        }
+        .badge-purple { 
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            color: #be185d;
+        }
 
+        /* Modal Styling */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(15, 23, 42, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
+            padding: 1rem;
         }
         
         .modal-content {
             background: white;
             padding: 2rem;
-            border-radius: 1rem;
-            width: 90%;
+            border-radius: 20px;
+            width: 100%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
             animation: fadeIn 0.3s ease;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
@@ -238,29 +337,38 @@
             .md\:flex-row { flex-direction: row; }
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1; 
+            background: #f1f5f9; 
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #c1c1c1; 
+            background: #cbd5e1; 
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8; 
+            background: #94a3b8; 
         }
 
+        /* Corporate Stat Cards */
         .stat-card {
             padding: 1.5rem;
-            border-radius: 1rem;
-            color: #FF2D92;
+            border-radius: 16px;
+            color: white;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s ease;
         }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
         .stat-card::after {
             content: '';
             position: absolute;
@@ -268,54 +376,433 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%);
             transform: rotate(45deg);
         }
 
-        .debug-info {
-            background: #f3f4f6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            font-size: 0.75rem;
-            color: #6b7280;
+        .stat-card .icon {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 3rem;
+            opacity: 0.2;
         }
+
+        .debug-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .debug-info code {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Welcome Text */
+        .welcome-text {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle-text {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        /* Tab Styling */
+        .admin-tab {
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab.active-tab {
+            color: #8B5CF6;
+            border-bottom-color: #8B5CF6;
+        }
+        
+        .admin-tab.active-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B5CF6, #EC4899);
+        }
+
+        /* Order Option Cards */
+        .order-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .order-option:hover {
+            transform: scale(1.02);
+        }
+
+        .peer:checked + .order-option {
+            border-color: #8B5CF6;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+        }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            color: #1e293b;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 200;
+            border-left: 4px solid #8B5CF6;
+            min-width: 300px;
+        }
+
+        #toast.show {
+            transform: translateY(0);
+        }
+
+        #toast.error {
+            border-left-color: #ef4444;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border: 1px solid #ddd6fe;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box i {
+            color: #8B5CF6;
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+
+        .info-box p {
+            color: #6d28d9;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Cutoff Warning */
+        .cutoff-warning {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+            border: 1px solid #fecdd3;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cutoff-warning i {
+            color: #f43f5e;
+            font-size: 1rem;
+        }
+
+        .cutoff-warning span {
+            color: #be123c;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Status Display */
+        .status-display {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-radius: 16px;
+            border: 2px solid #86efac;
+        }
+
+        .status-display.cancelled {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fca5a5;
+        }
+
+        .status-display.locked {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fcd34d;
+        }
+
+        /* User Profile Card */
+        .profile-card {
+            background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+        }
+
+        .profile-card h3 {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .profile-card .info-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .profile-card .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .profile-card .label {
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+
+        .profile-card .value {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* History Item */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .history-item:hover {
+            background: #f1f5f9;
+            transform: translateX(4px);
+        }
+
+        .history-item .date {
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .history-item .preference {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        /* Sub Tab Buttons */
+        .subtab-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .subtab-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .subtab-btn.active {
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Action Buttons in Table */
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-right: 0.5rem;
+        }
+
+        .action-btn.edit {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .action-btn.edit:hover {
+            background: #8B5CF6;
+            color: white;
+        }
+
+        .action-btn.delete {
+            background: #ffe4e6;
+            color: #e11d48;
+        }
+
+        .action-btn.delete:hover {
+            background: #e11d48;
+            color: white;
+        }
+
+        /* Vendor Summary Stats */
+        .vendor-stat {
+            text-align: center;
+            padding: 1.25rem;
+            border-radius: 12px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .vendor-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .vendor-stat.yes {
+            border-color: #86efac;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+
+        .vendor-stat.nospicy {
+            border-color: #fde047;
+            background: linear-gradient(135deg, #fefce8 0%, #ffffff 100%);
+        }
+
+        .vendor-stat.veg {
+            border-color: #c4b5fd;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+        }
+
+        .vendor-stat .number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .vendor-stat .label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .vendor-stat.yes .number { color: #059669; }
+        .vendor-stat.yes .label { color: #047857; }
+        .vendor-stat.nospicy .number { color: #ca8a04; }
+        .vendor-stat.nospicy .label { color: #a16207; }
+        .vendor-stat.veg .number { color: #7c3aed; }
+        .vendor-stat.veg .label { color: #6d28d9; }
     </style>
+<base target="_blank">
 </head>
 <body>
 
     <!-- ================= LOGIN VIEW ================= -->
     <div id="loginView" class="min-h-screen flex flex-col items-center justify-center bg-gradient-brand p-4">
-        <div class="card w-full max-w-md animate-fade-in text-center">
-            <div class="mb-6">
-                <img src="https://imgur.com/a/z87EU87" alt="Kanan Kiri Logo" style="height: 100px; margin: 0 auto 1rem auto; display: block;">
-                </div>
-                <h1 class="text-2xl font-bold text-gray-800">Kanan Kiri</h1>
-                <p class="text-gray-500">Lunch Ordering System</p>
+        <div class="card w-full max-w-md animate-fade-in text-center relative z-10">
+            <div class="mb-8">
+                <img src="https://i.imgur.com/T3gdVQU.png" alt="Kanan Kiri Logo" class="logo-img mx-auto" onerror="this.src='https://via.placeholder.com/200x80/667eea/ffffff?text=KANAN+KIRI'">
+                <h1 class="welcome-text text-gradient">Kanan Kiri</h1>
+                <p class="subtitle-text text-gray-500">Lunch Ordering System</p>
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="mb-4 text-left">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">NIK Karyawan</label>
-                    <input type="text" id="loginNik" class="input-field" placeholder="Masukkan NIK" required>
+                <div class="mb-5 text-left">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">NIK Karyawan</label>
+                    <div class="relative">
+                        <i class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="loginNik" class="input-field pl-10" placeholder="Masukkan NIK" required>
+                    </div>
                 </div>
                 
                 <div class="mb-6 text-left">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="loginPassword" class="input-field" placeholder="••••••" required>
-                    <p class="text-xs text-gray-400 mt-1">*Password default sama dengan NIK (Admin: 123456)</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="loginPassword" class="input-field pl-10" placeholder="••••••" required>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i>Password default sama dengan NIK (Admin: 123456)</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-full text-lg py-3">
-                    Sign In
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
                 </button>
             </form>
 
             <div class="debug-info">
-                <p><strong>Test Login:</strong></p>
-                <p>Admin → NIK: <code>92318</code> | Pass: <code>123456</code></p>
-                <p>Karyawan → NIK: <code>92301</code> | Pass: <code>92301</code></p>
-                <button onclick="resetAllData()" class="btn btn-secondary w-full mt-2 text-sm">Reset Data (Kalau Error)</button>
+                <p class="font-semibold mb-2"><i class="fas fa-bug mr-2"></i>Test Login:</p>
+                <p class="mb-1">Admin → NIK: <code>92318</code> | Pass: <code>123456</code></p>
+                <p class="mb-3">Karyawan → NIK: <code>92301</code> | Pass: <code>92301</code></p>
+                <button onclick="resetAllData()" class="btn btn-secondary w-full text-sm py-2">
+                    <i class="fas fa-redo mr-2"></i>Reset Data (Kalau Error)
+                </button>
             </div>
         </div>
     </div>
@@ -324,11 +811,10 @@
     <div id="appView" class="hidden min-h-screen flex flex-col">
         
         <nav class="navbar flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="https://imgur.com/a/z87EU87" alt="Kanan Kiri Logo" style="height: 40px;">
-                </div>
-                <div>
-                    <h1 class="font-bold text-gray-800 leading-tight">Lunch Order</h1>
+            <div class="flex items-center gap-4">
+                <img src="https://i.imgur.com/T3gdVQU.png" alt="Kanan Kiri Logo" class="logo-img-small" onerror="this.src='https://via.placeholder.com/120x45/667eea/ffffff?text=KK'">
+                <div class="hidden sm:block">
+                    <h1 class="font-bold text-gray-800 leading-tight text-lg">Lunch Order</h1>
                     <p class="text-xs text-gray-500">Kanan Kiri Mediaworks</p>
                 </div>
             </div>
@@ -338,8 +824,8 @@
                     <p id="userNameDisplay" class="text-sm font-bold text-gray-800">User Name</p>
                     <p id="userNikDisplay" class="text-xs text-gray-500">NIK</p>
                 </div>
-                <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors">
-                    <i class="fas fa-sign-out-alt text-xl"></i>
+                <button onclick="logout()" class="btn btn-secondary py-2 px-3 text-sm">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
                 </button>
             </div>
         </nav>
@@ -354,47 +840,45 @@
                         <div class="card mb-6">
                             <div class="flex justify-between items-start mb-6">
                                 <div>
-                                    <h2 class="text-xl font-bold text-gray-800">Lunch for Tomorrow</h2>
-                                    <p class="text-gray-500" id="tomorrowDateDisplay">Loading date...</p>
+                                    <h2 class="page-title">Lunch for Tomorrow</h2>
+                                    <p class="page-subtitle" id="tomorrowDateDisplay">Loading date...</p>
                                 </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-gray-400 block">Cutoff Time</span>
-                                    <span class="font-bold text-red-500">16:00 WIB</span>
+                                <div class="text-right cutoff-warning py-2 px-4">
+                                    <span class="text-sm"><i class="fas fa-clock mr-2"></i>Cutoff: 16:00 WIB</span>
                                 </div>
                             </div>
 
                             <div id="orderFormContainer">
-                                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-start gap-3">
-                                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
-                                    <p class="text-sm text-blue-700">
-                                        Please submit your lunch preference before 16:00 WIB. 
-                                        After cutoff time, the form will be locked for tomorrow's order.
-                                    </p>
+                                <div class="info-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <p>Please submit your lunch preference before 16:00 WIB. After cutoff time, the form will be locked for tomorrow's order.</p>
                                 </div>
 
                                 <form id="lunchOrderForm" onsubmit="handleOrderSubmit(event)">
                                     <div class="mb-6">
-                                        <label class="block text-sm font-medium text-gray-700 mb-3">Will you join lunch tomorrow?</label>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-3">Will you join lunch tomorrow?</label>
                                         <div class="grid grid-cols-2 gap-4">
                                             <label class="cursor-pointer relative">
                                                 <input type="radio" name="willEat" value="true" class="peer sr-only" checked onchange="togglePreference(true)">
-                                                <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center hover:bg-gray-50">
-                                                    <i class="fas fa-check-circle text-2xl mb-2 text-gray-300 peer-checked:text-green-500"></i>
+                                                <div class="order-option p-5 rounded-xl border-2 border-gray-200 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-utensils text-3xl mb-3 text-gray-300 peer-checked:text-green-500 transition-colors"></i>
                                                     <div class="font-bold text-gray-700 peer-checked:text-green-700">Yes, I'll Eat</div>
+                                                    <div class="text-xs text-gray-400 mt-1">Count me in!</div>
                                                 </div>
                                             </label>
                                             <label class="cursor-pointer relative">
                                                 <input type="radio" name="willEat" value="false" class="peer sr-only" onchange="togglePreference(false)">
-                                                <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center hover:bg-gray-50">
-                                                    <i class="fas fa-times-circle text-2xl mb-2 text-gray-300 peer-checked:text-red-500"></i>
+                                                <div class="order-option p-5 rounded-xl border-2 border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-times text-3xl mb-3 text-gray-300 peer-checked:text-red-500 transition-colors"></i>
                                                     <div class="font-bold text-gray-700 peer-checked:text-red-700">No, Skip</div>
+                                                    <div class="text-xs text-gray-400 mt-1">Maybe next time</div>
                                                 </div>
                                             </label>
                                         </div>
                                     </div>
 
                                     <div id="preferenceSection" class="mb-6 animate-fade-in">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Preference</label>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Meal Preference</label>
                                         <select id="preference" class="input-field bg-white">
                                             <option value="Normal">Normal</option>
                                             <option value="Tidak Pedas">Tidak Pedas (No Spicy)</option>
@@ -403,45 +887,51 @@
                                     </div>
 
                                     <div class="mb-6">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Allergy Notes (Optional)</label>
-                                        <textarea id="allergy" rows="2" class="input-field" placeholder="e.g., Shrimp, Nuts..."></textarea>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Allergy Notes (Optional)</label>
+                                        <textarea id="allergy" rows="2" class="input-field" placeholder="e.g., Shrimp, Nuts, Dairy..."></textarea>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary w-full py-3 text-lg">
-                                        Submit Order
+                                        <i class="fas fa-paper-plane mr-2"></i>Submit Order
                                     </button>
                                 </form>
                             </div>
 
-                            <div id="orderStatusMessage" class="hidden text-center py-8">
-                                <div id="statusIcon" class="text-6xl mb-4">✅</div>
-                                <h3 id="statusTitle" class="text-2xl font-bold mb-2">Order Submitted!</h3>
-                                <p id="statusDesc" class="text-gray-500 mb-6">You have successfully ordered for tomorrow.</p>
-                                <button onclick="resetOrderForm()" class="btn btn-secondary">
-                                    <i class="fas fa-edit mr-2"></i> Change Order
-                                </button>
+                            <div id="orderStatusMessage" class="hidden">
+                                <div id="statusContainer" class="status-display">
+                                    <div id="statusIcon" class="text-6xl mb-4">✅</div>
+                                    <h3 id="statusTitle" class="text-2xl font-bold mb-2">Order Submitted!</h3>
+                                    <p id="statusDesc" class="text-gray-600 mb-6">You have successfully ordered for tomorrow.</p>
+                                    <button onclick="resetOrderForm()" class="btn btn-secondary">
+                                        <i class="fas fa-edit mr-2"></i>Change Order
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="md:col-span-1">
-                        <div class="card mb-6 bg-gradient-soft border-none">
-                            <h3 class="font-bold text-gray-800 mb-4">My Profile</h3>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-500">NIK</span>
-                                    <span id="empNik" class="font-semibold">-</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-500">Location</span>
-                                    <span class="font-semibold">Bandung</span>
-                                </div>
+                        <div class="profile-card mb-6">
+                            <h3><i class="fas fa-user-circle mr-2"></i>My Profile</h3>
+                            <div class="info-row">
+                                <span class="label">Nama</span>
+                                <span id="empName" class="value">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">NIK</span>
+                                <span id="empNik" class="value">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Location</span>
+                                <span class="value">Bandung</span>
                             </div>
                         </div>
 
                         <div class="card">
-                            <h3 class="font-bold text-gray-800 mb-4">Recent History (30 Days)</h3>
-                            <div id="historyList" class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                            <h3 class="font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-history mr-2 text-gray-400"></i>Recent History (30 Days)
+                            </h3>
+                            <div id="historyList" class="max-h-96 overflow-y-auto pr-2">
                                 <div class="text-center text-gray-400 py-4 text-sm">No history found</div>
                             </div>
                         </div>
@@ -451,59 +941,68 @@
 
             <!-- ADMIN VIEW -->
             <div id="adminView" class="hidden animate-fade-in">
-                <div class="flex gap-4 mb-6 border-b border-gray-200">
-                    <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="pb-3 px-2 font-semibold text-gray-800 border-b-2 border-transparent hover:text-pink-600 transition-colors admin-tab active-tab">
-                        Order Dashboard
+                <div class="flex gap-6 mb-6 border-b border-gray-200">
+                    <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="pb-4 px-2 font-semibold text-gray-800 border-b-2 border-transparent hover:text-indigo-600 transition-colors admin-tab active-tab flex items-center gap-2">
+                        <i class="fas fa-chart-pie"></i>Order Dashboard
                     </button>
-                    <button onclick="switchAdminTab('users')" id="tab-users" class="pb-3 px-2 font-semibold text-gray-500 border-b-2 border-transparent hover:text-pink-600 transition-colors admin-tab">
-                        User Management
+                    <button onclick="switchAdminTab('users')" id="tab-users" class="pb-4 px-2 font-semibold text-gray-500 border-b-2 border-transparent hover:text-indigo-600 transition-colors admin-tab flex items-center gap-2">
+                        <i class="fas fa-users"></i>User Management
                     </button>
                 </div>
 
                 <div id="adminDashboard" class="block">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                        <div class="stat-card bg-gradient-to-br from-green-400 to-green-600">
+                        <div class="stat-card bg-gradient-to-br from-emerald-400 to-emerald-600">
+                            <i class="fas fa-check-circle icon"></i>
                             <div class="relative z-10">
-                                <p class="text-green-100 text-sm font-medium">Total YES</p>
-                                <h3 class="text-3xl font-bold" id="statYes">0</h3>
+                                <p class="text-white text-sm font-medium mb-1">Total YES</p>
+                                <h3 class="text-4xl font-bold text-white" id="statYes">0</h3>
+                                <p class="text-white text-xs mt-1">Confirmed orders</p>
                             </div>
                         </div>
-                        <div class="stat-card bg-gradient-to-br from-red-400 to-red-600">
+                        <div class="stat-card bg-gradient-to-br from-rose-400 to-rose-600">
+                            <i class="fas fa-times-circle icon"></i>
                             <div class="relative z-10">
-                                <p class="text-red-100 text-sm font-medium">Total NO</p>
-                                <h3 class="text-3xl font-bold" id="statNo">0</h3>
+                                <p class="text-white text-sm font-medium mb-1">Total NO</p>
+                                <h3 class="text-4xl font-bold text-white" id="statNo">0</h3>
+                                <p class="text-white text-xs mt-1">Skipping lunch</p>
                             </div>
                         </div>
-                        <div class="stat-card bg-gradient-to-br from-yellow-400 to-yellow-600">
+                        <div class="stat-card bg-gradient-to-br from-amber-400 to-amber-600">
+                            <i class="fas fa-clock icon"></i>
                             <div class="relative z-10">
-                                <p class="text-yellow-100 text-sm font-medium">Not Filled</p>
-                                <h3 class="text-3xl font-bold" id="statPending">0</h3>
+                                <p class="text-white text-sm font-medium mb-1">Not Filled</p>
+                                <h3 class="text-4xl font-bold text-white" id="statPending">0</h3>
+                                <p class="text-white text-xs mt-1">Awaiting response</p>
                             </div>
                         </div>
-                        <div class="stat-card bg-gradient-to-br from-blue-400 to-blue-600">
+                        <div class="stat-card bg-gradient-to-br from-violet-400 to-fuchsia-500">
+                            <i class="fas fa-users icon"></i>
                             <div class="relative z-10">
-                                <p class="text-blue-100 text-sm font-medium">Total Employees</p>
-                                <h3 class="text-3xl font-bold" id="statTotal">0</h3>
+                                <p class="text-white text-sm font-medium mb-1">Total Employees</p>
+                                <h3 class="text-4xl font-bold text-white" id="statTotal">0</h3>
+                                <p class="text-white text-xs mt-1">Active staff</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="card mb-6">
-                        <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
-                            <div class="flex gap-2 w-full md:w-auto">
-                                <input type="date" id="adminDateFilter" class="input-field" onchange="renderAdminDashboard()">
+                        <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+                            <div class="flex gap-3 w-full md:w-auto items-center">
+                                <label class="text-sm font-semibold text-gray-700">Date:</label>
+                                <input type="date" id="adminDateFilter" class="input-field w-auto" onchange="renderAdminDashboard()">
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="openVendorModal()" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane mr-2"></i> Send to Vendor
+                                    <i class="fas fa-paper-plane mr-2"></i>Send to Vendor
                                 </button>
                             </div>
                         </div>
 
-                        <div class="flex gap-2 mb-4 border-b border-gray-100 pb-2">
-                            <button onclick="setOrderSubTab('all')" class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 order-subtab active" data-filter="all">All</button>
-                            <button onclick="setOrderSubTab('yes')" class="px-3 py-1 rounded-full text-sm font-medium text-gray-600 hover:bg-green-50 hover:text-green-600 order-subtab" data-filter="yes">YES</button>
-                            <button onclick="setOrderSubTab('no')" class="px-3 py-1 rounded-full text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 order-subtab" data-filter="no">NO</button>
+                        <div class="flex gap-2 mb-6">
+                            <button onclick="setOrderSubTab('all')" class="subtab-btn active" data-filter="all">All Orders</button>
+                            <button onclick="setOrderSubTab('yes')" class="subtab-btn" data-filter="yes">YES Only</button>
+                            <button onclick="setOrderSubTab('no')" class="subtab-btn" data-filter="no">NO Only</button>
                         </div>
 
                         <div class="table-container">
@@ -528,14 +1027,20 @@
                 <div id="adminUsers" class="hidden">
                     <div class="card">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-xl font-bold">Employee Management</h2>
+                            <div>
+                                <h2 class="page-title">Employee Management</h2>
+                                <p class="page-subtitle">Manage staff accounts and permissions</p>
+                            </div>
                             <button onclick="openUserModal()" class="btn btn-primary">
-                                <i class="fas fa-plus mr-2"></i> Add Employee
+                                <i class="fas fa-plus mr-2"></i>Add Employee
                             </button>
                         </div>
 
-                        <div class="mb-4">
-                            <input type="text" id="userSearch" placeholder="Cari nama atau NIK..." class="input-field" onkeyup="renderUserTable()">
+                        <div class="mb-6">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" id="userSearch" placeholder="Cari nama atau NIK..." class="input-field pl-10" onkeyup="renderUserTable()">
+                            </div>
                         </div>
 
                         <div class="table-container">
@@ -561,22 +1066,27 @@
     <!-- MODALS -->
     <div id="editOrderModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('editOrderModal')">
         <div class="modal-content">
-            <h3 class="text-xl font-bold mb-4">Edit Order</h3>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                    <i class="fas fa-edit text-violet-600"></i>
+                </div>
+                <h3 class="text-xl font-bold">Edit Order</h3>
+            </div>
             <form id="editOrderForm" onsubmit="saveOrderEdit(event)">
                 <input type="hidden" id="editOrderId">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Karyawan</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Karyawan</label>
                     <input type="text" id="editOrderUserName" class="input-field bg-gray-100" disabled>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Status</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Status</label>
                     <select id="editOrderStatus" class="input-field">
                         <option value="true">Yes (Eat)</option>
                         <option value="false">No (Skip)</option>
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Preference</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Preference</label>
                     <select id="editOrderPref" class="input-field">
                         <option value="Normal">Normal</option>
                         <option value="Tidak Pedas">Tidak Pedas</option>
@@ -584,16 +1094,18 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Allergy</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Allergy</label>
                     <input type="text" id="editOrderAllergy" class="input-field">
                 </div>
                 <div class="mb-6">
-                    <label class="block text-sm font-medium mb-1">Reason for Change <span class="text-red-500">*</span></label>
-                    <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..."></textarea>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Reason for Change <span class="text-red-500">*</span></label>
+                    <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..." rows="3"></textarea>
                 </div>
-                <div class="flex justify-end gap-2">
+                <div class="flex justify-end gap-3">
                     <button type="button" onclick="closeModal('editOrderModal')" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i>Save Changes
+                    </button>
                 </div>
             </form>
         </div>
@@ -601,32 +1113,39 @@
 
     <div id="userModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('userModal')">
         <div class="modal-content">
-            <h3 id="userModalTitle" class="text-xl font-bold mb-4">Add Employee</h3>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                    <i class="fas fa-user-plus text-violet-600"></i>
+                </div>
+                <h3 id="userModalTitle" class="text-xl font-bold">Add Employee</h3>
+            </div>
             <form id="userForm" onsubmit="saveUser(event)">
                 <input type="hidden" id="editUserId">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">NIK</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">NIK</label>
                     <input type="text" id="userNik" class="input-field" required placeholder="Contoh: 92318">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Nama Lengkap</label>
-                    <input type="text" id="userName" class="input-field" required>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Nama Lengkap</label>
+                    <input type="text" id="userName" class="input-field" required placeholder="Nama lengkap karyawan">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Role</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Role</label>
                     <select id="userRole" class="input-field">
                         <option value="employee">Employee</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Password</label>
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Password</label>
                     <input type="text" id="userPassword" class="input-field" placeholder="Default: sama dengan NIK">
-                    <p class="text-xs text-gray-400 mt-1">Kosongkan untuk menggunakan NIK sebagai password</p>
+                    <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i>Kosongkan untuk menggunakan NIK sebagai password</p>
                 </div>
-                <div class="flex justify-end gap-2 mt-6">
+                <div class="flex justify-end gap-3">
                     <button type="button" onclick="closeModal('userModal')" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Employee</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i>Save Employee
+                    </button>
                 </div>
             </form>
         </div>
@@ -634,47 +1153,57 @@
 
     <div id="vendorModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('vendorModal')">
         <div class="modal-content" style="max-width: 600px;">
-            <h3 class="text-xl font-bold mb-2">Vendor Summary</h3>
-            <p class="text-sm text-gray-500 mb-4" id="vendorDateDisplay"></p>
-            <div class="grid grid-cols-3 gap-4 mb-6">
-                <div class="text-center p-3 bg-green-50 rounded-lg">
-                    <div class="text-2xl font-bold text-green-600" id="vendorTotalYes">0</div>
-                    <div class="text-xs text-green-800">Total YES</div>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <i class="fas fa-store text-emerald-600"></i>
                 </div>
-                <div class="text-center p-3 bg-yellow-50 rounded-lg">
-                    <div class="text-2xl font-bold text-yellow-600" id="vendorNoSpicy">0</div>
-                    <div class="text-xs text-yellow-800">No Spicy</div>
-                </div>
-                <div class="text-center p-3 bg-purple-50 rounded-lg">
-                    <div class="text-2xl font-bold text-purple-600" id="vendorVeg">0</div>
-                    <div class="text-xs text-purple-800">Vegetarian</div>
+                <div>
+                    <h3 class="text-xl font-bold">Vendor Summary</h3>
+                    <p class="text-sm text-gray-500" id="vendorDateDisplay"></p>
                 </div>
             </div>
-            <label class="block text-sm font-medium mb-2">Generated Text:</label>
-            <textarea id="vendorText" class="input-field font-mono text-sm bg-gray-50 mb-4" rows="6" readonly></textarea>
-            <div class="flex gap-2">
-                <button onclick="copyVendorText()" class="btn btn-secondary flex-1">
-                    <i class="fas fa-copy mr-2"></i> Copy to Clipboard
+            
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="vendor-stat yes">
+                    <div class="number" id="vendorTotalYes">0</div>
+                    <div class="label">Total YES</div>
+                </div>
+                <div class="vendor-stat nospicy">
+                    <div class="number" id="vendorNoSpicy">0</div>
+                    <div class="label">No Spicy</div>
+                </div>
+                <div class="vendor-stat veg">
+                    <div class="number" id="vendorVeg">0</div>
+                    <div class="label">Vegetarian</div>
+                </div>
+            </div>
+            
+            <label class="block text-sm font-semibold mb-2 text-gray-700">Generated Text:</label>
+            <textarea id="vendorText" class="input-field font-mono text-sm bg-gray-50 mb-4" rows="8" readonly></textarea>
+            
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="copyVendorText()" class="btn btn-secondary">
+                    <i class="fas fa-copy mr-2"></i>Copy
                 </button>
-                <a id="mailtoLink" href="#" class="btn btn-info flex-1 text-center">
-                    <i class="fas fa-envelope mr-2"></i> Open Email Client
+                <a id="mailtoLink" href="#" class="btn btn-info text-center">
+                    <i class="fas fa-envelope mr-2"></i>Email
                 </a>
-                <button onclick="exportCSV()" class="btn btn-primary flex-1">
-                    <i class="fas fa-file-csv mr-2"></i> Export CSV
+                <button onclick="exportCSV()" class="btn btn-primary">
+                    <i class="fas fa-file-csv mr-2"></i>Export CSV
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 transition-transform duration-300 z-50 flex items-center gap-3">
-        <i class="fas fa-check-circle text-green-400"></i>
+    <div id="toast">
+        <i class="fas fa-check-circle text-green-500 text-xl"></i>
         <span id="toastMsg">Operation successful</span>
     </div>
 
     <script>
         // SEMUA DATA KARYAWAN (50 orang)
         const allEmployees = [
-            { nik: '92318', name: 'DINDA TIUR HANIFAH M', role: 'admin' },
+            { nik: '92318', name: 'DINDA TIUR HANIFAH MANURUNG', role: 'admin' },
             { nik: '92301', name: 'Bilqis Putri Taqiyudhini', role: 'employee' },
             { nik: '92306', name: 'NADIA MAYANG', role: 'employee' },
             { nik: '92312', name: 'Giandinna Putriani', role: 'employee' },
@@ -798,6 +1327,9 @@
                 document.getElementById('userNameDisplay').textContent = user.name;
                 document.getElementById('userNikDisplay').textContent = 'NIK: ' + user.nik;
                 
+                // Welcome message with full name
+                const welcomeMsg = `Selamat datang, ${user.name}!`;
+                
                 if (user.role === 'admin') {
                     document.getElementById('adminView').classList.remove('hidden');
                     document.getElementById('employeeView').classList.add('hidden');
@@ -807,7 +1339,7 @@
                     document.getElementById('adminView').classList.add('hidden');
                     initEmployeeView();
                 }
-                showToast(`Selamat datang, ${user.name}!`);
+                showToast(welcomeMsg);
             } else {
                 console.log('Login failed');
                 showToast('NIK atau password salah', 'error');
@@ -819,6 +1351,7 @@
             document.getElementById('appView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
             document.getElementById('loginForm').reset();
+            showToast('Berhasil logout');
         }
 
         function initEmployeeView() {
@@ -826,6 +1359,7 @@
             tomorrow.setDate(tomorrow.getDate() + 1);
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('tomorrowDateDisplay').textContent = tomorrow.toLocaleDateString('id-ID', options);
+            document.getElementById('empName').textContent = currentUser.name;
             document.getElementById('empNik').textContent = currentUser.nik;
             checkExistingOrder();
             renderHistory();
@@ -844,6 +1378,7 @@
 
             const formContainer = document.getElementById('orderFormContainer');
             const statusMsg = document.getElementById('orderStatusMessage');
+            const statusContainer = document.getElementById('statusContainer');
             const statusTitle = document.getElementById('statusTitle');
             const statusDesc = document.getElementById('statusDesc');
             const statusIcon = document.getElementById('statusIcon');
@@ -851,10 +1386,11 @@
             if (isCutoffPassed && !existingOrder) {
                 formContainer.classList.add('hidden');
                 statusMsg.classList.remove('hidden');
+                statusContainer.className = 'status-display locked';
                 statusIcon.textContent = '⏰';
                 statusTitle.textContent = 'Cutoff Time Passed';
                 statusDesc.textContent = 'Anda melewati batas waktu 16:00 WIB untuk pesanan besok.';
-                statusTitle.className = 'text-2xl font-bold mb-2 text-red-500';
+                statusTitle.className = 'text-2xl font-bold mb-2 text-amber-600';
                 return;
             }
 
@@ -862,11 +1398,13 @@
                 formContainer.classList.add('hidden');
                 statusMsg.classList.remove('hidden');
                 if (existingOrder.willEat) {
+                    statusContainer.className = 'status-display';
                     statusIcon.textContent = '🍱';
                     statusTitle.textContent = 'Anda ikut makan!';
                     statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Alergi: ${existingOrder.allergy || '-'}`;
-                    statusTitle.className = 'text-2xl font-bold mb-2 text-green-600';
+                    statusTitle.className = 'text-2xl font-bold mb-2 text-emerald-600';
                 } else {
+                    statusContainer.className = 'status-display cancelled';
                     statusIcon.textContent = '❌';
                     statusTitle.textContent = 'Anda tidak ikut makan';
                     statusDesc.textContent = 'Sampai jumpa besok!';
@@ -940,6 +1478,7 @@
             
             checkExistingOrder();
             renderHistory();
+            showToast('Form pesanan telah direset');
         }
 
         function renderHistory() {
@@ -950,23 +1489,24 @@
                 .slice(0, 10);
 
             if (orders.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">Belum ada riwayat</div>';
+                list.innerHTML = '<div class="text-center text-gray-400 py-8 text-sm"><i class="fas fa-inbox text-3xl mb-2 block"></i>Belum ada riwayat</div>';
                 return;
             }
 
             list.innerHTML = orders.map(o => {
                 const dateObj = new Date(o.date);
                 const dateStr = dateObj.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
-                const statusColor = o.willEat ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
+                const statusColor = o.willEat ? 'text-emerald-600 bg-emerald-50 border-emerald-200' : 'text-rose-600 bg-rose-50 border-rose-200';
                 const statusText = o.willEat ? 'YES' : 'NO';
+                const icon = o.willEat ? 'fa-check' : 'fa-times';
                 
                 return `
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <div class="history-item">
                         <div>
-                            <div class="font-bold text-gray-700 text-sm">${dateStr}</div>
-                            <div class="text-xs text-gray-500">${o.preference}</div>
+                            <div class="date"><i class="far fa-calendar-alt mr-2 text-gray-400"></i>${dateStr}</div>
+                            <div class="preference">${o.preference}</div>
                         </div>
-                        <span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">${statusText}</span>
+                        <span class="badge ${statusColor}"><i class="fas ${icon} mr-1"></i>${statusText}</span>
                     </div>
                 `;
             }).join('');
@@ -976,13 +1516,11 @@
             currentAdminTab = tab;
             document.getElementById('adminDashboard').classList.add('hidden');
             document.getElementById('adminUsers').classList.add('hidden');
-            document.getElementById('tab-dashboard').classList.remove('active-tab', 'border-pink-500', 'text-pink-600');
-            document.getElementById('tab-users').classList.remove('active-tab', 'border-pink-500', 'text-pink-600');
+            document.getElementById('tab-dashboard').classList.remove('active-tab');
+            document.getElementById('tab-users').classList.remove('active-tab');
             
             document.getElementById(tab === 'dashboard' ? 'adminDashboard' : 'adminUsers').classList.remove('hidden');
-            const activeBtn = document.getElementById(tab === 'dashboard' ? 'tab-dashboard' : 'tab-users');
-            activeBtn.classList.add('active-tab', 'border-pink-500', 'text-pink-600');
-            activeBtn.classList.remove('text-gray-500');
+            document.getElementById(tab === 'dashboard' ? 'tab-dashboard' : 'tab-users').classList.add('active-tab');
             
             if (tab === 'dashboard') renderAdminDashboard();
             if (tab === 'users') renderUserTable();
@@ -990,13 +1528,11 @@
 
         function setOrderSubTab(filter) {
             currentOrderFilter = filter;
-            document.querySelectorAll('.order-subtab').forEach(btn => {
+            document.querySelectorAll('.subtab-btn').forEach(btn => {
                 if (btn.dataset.filter === filter) {
-                    btn.classList.add('bg-gray-800', 'text-white');
-                    btn.classList.remove('bg-gray-100', 'text-gray-600');
+                    btn.classList.add('active');
                 } else {
-                    btn.classList.remove('bg-gray-800', 'text-white');
-                    btn.classList.add('bg-gray-100', 'text-gray-600');
+                    btn.classList.remove('active');
                 }
             });
             renderAdminDashboard();
@@ -1035,9 +1571,9 @@
             const tbody = document.getElementById('adminOrderTable');
             tbody.innerHTML = filtered.map(u => {
                 const hasOrder = !!u.order;
-                const status = !hasOrder ? '<span class="badge badge-yellow">Pending</span>' : 
-                               u.order.willEat ? '<span class="badge badge-green">YES</span>' : 
-                               '<span class="badge badge-red">NO</span>';
+                const status = !hasOrder ? '<span class="badge badge-yellow"><i class="fas fa-clock mr-1"></i>Pending</span>' : 
+                               u.order.willEat ? '<span class="badge badge-green"><i class="fas fa-check mr-1"></i>YES</span>' : 
+                               '<span class="badge badge-red"><i class="fas fa-times mr-1"></i>NO</span>';
                 
                 return `
                     <tr>
@@ -1048,13 +1584,13 @@
                         <td>${status}</td>
                         <td>${hasOrder ? u.order.preference : '-'}</td>
                         <td>${hasOrder ? u.order.allergy || '-' : '-'}</td>
-                        <td class="text-xs">${hasOrder ? new Date(u.order.submittedAt).toLocaleString('id-ID') : '-'}</td>
+                        <td class="text-xs">${hasOrder ? new Date(u.order.submittedAt).toLocaleString('id-ID', {hour: '2-digit', minute:'2-digit', day:'numeric', month:'short'}) : '-'}</td>
                         <td>
-                            <button onclick="openEditOrder('${u.id}', '${targetDate}')" class="text-blue-600 hover:text-blue-800 mr-2" title="Edit">
+                            <button onclick="openEditOrder('${u.id}', '${targetDate}')" class="action-btn edit" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </button>
                             ${hasOrder ? `
-                            <button onclick="deleteOrder('${u.order.id}')" class="text-red-600 hover:text-red-800" title="Delete">
+                            <button onclick="deleteOrder('${u.order.id}')" class="action-btn delete" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>` : ''}
                         </td>
@@ -1074,11 +1610,11 @@
                 <tr>
                     <td class="font-mono font-medium">${u.nik}</td>
                     <td class="font-medium">${u.name}</td>
-                    <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role}</span></td>
-                    <td><span class="badge badge-green">Active</span></td>
+                    <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role === 'admin' ? '<i class="fas fa-crown mr-1"></i>Admin' : '<i class="fas fa-user mr-1"></i>Employee'}</span></td>
+                    <td><span class="badge badge-green"><i class="fas fa-check-circle mr-1"></i>Active</span></td>
                     <td>
-                        <button onclick="editUser('${u.id}')" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteUser('${u.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                        <button onclick="editUser('${u.id}')" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteUser('${u.id}')" class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -1253,7 +1789,9 @@ Detail:
 - Tidak Pedas: ${noSpicy} pax
 - Vegetarian: ${veg} pax
 
-Catatan: Mohon antar ke kantor pukul 12:00 WIB.`;
+Catatan: Mohon antar ke kantor pukul 12:00 WIB.
+
+Terima kasih.`;
             
             document.getElementById('vendorText').value = text;
             document.getElementById('mailtoLink').href = `mailto:vendor@example.com?subject=Order Makan Siang ${targetDate}&body=${encodeURIComponent(text)}`;
@@ -1302,6 +1840,7 @@ Catatan: Mohon antar ke kantor pukul 12:00 WIB.`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            showToast('CSV berhasil diexport!');
         }
 
         function closeModal(id) {
@@ -1315,14 +1854,16 @@ Catatan: Mohon antar ke kantor pukul 12:00 WIB.`;
             
             toastMsg.textContent = msg;
             if (type === 'error') {
-                icon.className = 'fas fa-exclamation-circle text-red-400';
+                toast.classList.add('error');
+                icon.className = 'fas fa-exclamation-circle text-red-500 text-xl';
             } else {
-                icon.className = 'fas fa-check-circle text-green-400';
+                toast.classList.remove('error');
+                icon.className = 'fas fa-check-circle text-green-500 text-xl';
             }
 
-            toast.classList.remove('translate-y-20');
+            toast.classList.add('show');
             setTimeout(() => {
-                toast.classList.add('translate-y-20');
+                toast.classList.remove('show');
             }, 3000);
         }
 
