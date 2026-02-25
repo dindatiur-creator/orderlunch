@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CUSTOM TAILWIND-STYLE CSS --- */
         :root {
             --color-primary: #FF9500;
             --color-secondary: #FF2D92;
@@ -29,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* Gradients - Updated to match logo */
         .bg-gradient-brand {
             background: linear-gradient(135deg, #FFB800 0%, #FF6B00 25%, #FF2D92 75%, #9C27B0 100%);
         }
@@ -44,7 +42,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Layout Utilities */
         .min-h-screen { min-height: 100vh; }
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
@@ -55,7 +52,6 @@
         .block { display: block; }
         .grid { display: grid; }
         
-        /* Spacing */
         .p-4 { padding: 1rem; }
         .p-6 { padding: 1.5rem; }
         .p-8 { padding: 2rem; }
@@ -68,7 +64,6 @@
         .mr-2 { margin-right: 0.5rem; }
         .mx-auto { margin-left: auto; margin-right: auto; }
 
-        /* Components */
         .card {
             background: white;
             border-radius: 1rem;
@@ -137,7 +132,6 @@
         .btn-danger { background-color: #EF4444; color: white; }
         .btn-info { background-color: #3B82F6; color: white; }
 
-        /* Navbar */
         .navbar {
             background: white;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -147,32 +141,19 @@
             z-index: 50;
         }
 
-        /* Logo Styles */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .logo-img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 1rem;
         }
 
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            position: relative;
+        .logo-img-small {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
         }
 
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: #1f2937;
-            line-height: 1.2;
-        }
-
-        .logo-subtext {
-            font-size: 0.75rem;
-            color: #6b7280;
-        }
-
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -182,12 +163,6 @@
             animation: fadeIn 0.5s ease-out forwards;
         }
 
-        @keyframes slideIn {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-
-        /* Table */
         .table-container {
             overflow-x: auto;
             border-radius: 0.5rem;
@@ -221,7 +196,6 @@
             background-color: #f9fafb;
         }
 
-        /* Status Badges */
         .badge {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
@@ -234,7 +208,6 @@
         .badge-blue { background-color: #dbeafe; color: #1e40af; }
         .badge-purple { background-color: #e9d5ff; color: #7c3aed; }
 
-        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -257,7 +230,6 @@
             animation: fadeIn 0.3s ease;
         }
 
-        /* Responsive Grid */
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         @media (min-width: 768px) {
             .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -266,16 +238,6 @@
             .md\:flex-row { flex-direction: row; }
         }
 
-        /* Toggle Switch */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #FF2D92;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #FF2D92;
-        }
-        
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -291,7 +253,6 @@
             background: #a8a8a8; 
         }
 
-        /* Stats Card */
         .stat-card {
             padding: 1.5rem;
             border-radius: 1rem;
@@ -309,12 +270,6 @@
             background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
             transform: rotate(45deg);
         }
-
-        /* SVG Logo */
-        .kanankiri-logo {
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body>
@@ -323,25 +278,8 @@
     <div id="loginView" class="min-h-screen flex flex-col items-center justify-center bg-gradient-brand p-4">
         <div class="card w-full max-w-md animate-fade-in text-center">
             <div class="mb-6">
-                <!-- New Logo -->
-                <div class="logo-icon mx-auto mb-4">
-                    <svg class="kanankiri-logo" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Left half (Orange-Yellow) -->
-                        <path d="M10 30 C10 15, 25 10, 35 10 L50 10 L50 25 L35 25 C30 25, 25 28, 25 30 C25 32, 30 35, 35 35 L50 35 L50 50 L35 50 C25 50, 10 45, 10 30 Z" fill="url(#orangeGradient)"/>
-                        <!-- Right half (Pink-Purple) -->
-                        <path d="M90 30 C90 45, 75 50, 65 50 L50 50 L50 35 L65 35 C70 35, 75 32, 75 30 C75 28, 70 25, 65 25 L50 25 L50 10 L65 10 C75 10, 90 15, 90 30 Z" fill="url(#pinkGradient)"/>
-                        <!-- Gradients -->
-                        <defs>
-                            <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#FFB800;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#FF6B00;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#FF2D92;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <span class="text-3xl font-bold text-gradient">KK</span>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">Kanan Kiri</h1>
                 <p class="text-gray-500">Lunch Ordering System</p>
@@ -349,14 +287,14 @@
 
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="mb-4 text-left">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="loginEmail" class="input-field" placeholder="name@kanankiricreative.com" required>
-                    <p class="text-xs text-gray-400 mt-1">*Must use @kanankiricreative.com domain</p>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">NIK Karyawan</label>
+                    <input type="text" id="loginNik" class="input-field" placeholder="Masukkan NIK" required>
                 </div>
                 
                 <div class="mb-6 text-left">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <input type="password" id="loginPassword" class="input-field" placeholder="••••••" required>
+                    <p class="text-xs text-gray-400 mt-1">*Password default sama dengan NIK</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-full text-lg py-3">
@@ -366,28 +304,13 @@
         </div>
     </div>
 
-    <!-- ================= MAIN APPLICATION (Hidden by default) ================= -->
+    <!-- ================= MAIN APPLICATION ================= -->
     <div id="appView" class="hidden min-h-screen flex flex-col">
         
-        <!-- Navbar -->
         <nav class="navbar flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <!-- Small Logo -->
-                <div class="w-10 h-10">
-                    <svg class="kanankiri-logo" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 30 C10 15, 25 10, 35 10 L50 10 L50 25 L35 25 C30 25, 25 28, 25 30 C25 32, 30 35, 35 35 L50 35 L50 50 L35 50 C25 50, 10 45, 10 30 Z" fill="url(#orangeGradientNav)"/>
-                        <path d="M90 30 C90 45, 75 50, 65 50 L50 50 L50 35 L65 35 C70 35, 75 32, 75 30 C75 28, 70 25, 65 25 L50 25 L50 10 L65 10 C75 10, 90 15, 90 30 Z" fill="url(#pinkGradientNav)"/>
-                        <defs>
-                            <linearGradient id="orangeGradientNav" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#FFB800;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#FF6B00;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="pinkGradientNav" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#FF2D92;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                <div class="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center text-white font-bold shadow-md">
+                    KK
                 </div>
                 <div>
                     <h1 class="font-bold text-gray-800 leading-tight">Lunch Order</h1>
@@ -398,7 +321,7 @@
             <div class="flex items-center gap-4">
                 <div class="text-right hidden md:block">
                     <p id="userNameDisplay" class="text-sm font-bold text-gray-800">User Name</p>
-                    <p id="userRoleDisplay" class="text-xs text-gray-500">Role</p>
+                    <p id="userNikDisplay" class="text-xs text-gray-500">NIK</p>
                 </div>
                 <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors">
                     <i class="fas fa-sign-out-alt text-xl"></i>
@@ -406,14 +329,12 @@
             </div>
         </nav>
 
-        <!-- Content Area -->
         <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
             
             <!-- EMPLOYEE VIEW -->
             <div id="employeeView" class="hidden animate-fade-in">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
-                    <!-- Order Form -->
                     <div class="md:col-span-2">
                         <div class="card mb-6">
                             <div class="flex justify-between items-start mb-6">
@@ -421,7 +342,7 @@
                                     <h2 class="text-xl font-bold text-gray-800">Lunch for Tomorrow</h2>
                                     <p class="text-gray-500" id="tomorrowDateDisplay">Loading date...</p>
                                 </div>
-                                <div id="cutoffTimer" class="text-right">
+                                <div class="text-right">
                                     <span class="text-xs text-gray-400 block">Cutoff Time</span>
                                     <span class="font-bold text-red-500">16:00 WIB</span>
                                 </div>
@@ -477,7 +398,6 @@
                                 </form>
                             </div>
 
-                            <!-- Status Message (Shown after submit or cutoff) -->
                             <div id="orderStatusMessage" class="hidden text-center py-8">
                                 <div id="statusIcon" class="text-6xl mb-4">✅</div>
                                 <h3 id="statusTitle" class="text-2xl font-bold mb-2">Order Submitted!</h3>
@@ -489,28 +409,24 @@
                         </div>
                     </div>
 
-                    <!-- Sidebar Info -->
                     <div class="md:col-span-1">
-                        <!-- User Info Card -->
                         <div class="card mb-6 bg-gradient-soft border-none">
                             <h3 class="font-bold text-gray-800 mb-4">My Profile</h3>
                             <div class="space-y-3 text-sm">
                                 <div class="flex justify-between">
-                                    <span class="text-gray-500">Department</span>
-                                    <span id="empDept" class="font-semibold">-</span>
+                                    <span class="text-gray-500">NIK</span>
+                                    <span id="empNik" class="font-semibold">-</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-500">Location</span>
-                                    <span id="empLoc" class="font-semibold">-</span>
+                                    <span class="font-semibold">Bandung</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- History Card -->
                         <div class="card">
                             <h3 class="font-bold text-gray-800 mb-4">Recent History (30 Days)</h3>
                             <div id="historyList" class="space-y-3 max-h-96 overflow-y-auto pr-2">
-                                <!-- History items injected here -->
                                 <div class="text-center text-gray-400 py-4 text-sm">No history found</div>
                             </div>
                         </div>
@@ -520,7 +436,6 @@
 
             <!-- ADMIN VIEW -->
             <div id="adminView" class="hidden animate-fade-in">
-                <!-- Tabs -->
                 <div class="flex gap-4 mb-6 border-b border-gray-200">
                     <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="pb-3 px-2 font-semibold text-gray-800 border-b-2 border-transparent hover:text-pink-600 transition-colors admin-tab active-tab">
                         Order Dashboard
@@ -530,9 +445,7 @@
                     </button>
                 </div>
 
-                <!-- DASHBOARD TAB -->
                 <div id="adminDashboard" class="block">
-                    <!-- Stats Row -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                         <div class="stat-card bg-gradient-to-br from-green-400 to-green-600">
                             <div class="relative z-10">
@@ -560,20 +473,10 @@
                         </div>
                     </div>
 
-                    <!-- Controls -->
                     <div class="card mb-6">
                         <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
                             <div class="flex gap-2 w-full md:w-auto">
                                 <input type="date" id="adminDateFilter" class="input-field" onchange="renderAdminDashboard()">
-                                <select id="adminDeptFilter" class="input-field" onchange="renderAdminDashboard()">
-                                    <option value="">All Departments</option>
-                                    <option value="Creative">Creative</option>
-                                    <option value="Tech">Tech</option>
-                                    <option value="HR">HR</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Operations">Operations</option>
-                                </select>
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="openVendorModal()" class="btn btn-primary">
@@ -582,7 +485,6 @@
                             </div>
                         </div>
 
-                        <!-- Sub Tabs -->
                         <div class="flex gap-2 mb-4 border-b border-gray-100 pb-2">
                             <button onclick="setOrderSubTab('all')" class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 order-subtab active" data-filter="all">All</button>
                             <button onclick="setOrderSubTab('yes')" class="px-3 py-1 rounded-full text-sm font-medium text-gray-600 hover:bg-green-50 hover:text-green-600 order-subtab" data-filter="yes">YES</button>
@@ -593,9 +495,8 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Employee</th>
-                                        <th>Dept</th>
-                                        <th>Location</th>
+                                        <th>NIK</th>
+                                        <th>Nama</th>
                                         <th>Status</th>
                                         <th>Preference</th>
                                         <th>Allergy</th>
@@ -603,15 +504,12 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="adminOrderTable">
-                                    <!-- Rows injected via JS -->
-                                </tbody>
+                                <tbody id="adminOrderTable"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- USER MANAGEMENT TAB -->
                 <div id="adminUsers" class="hidden">
                     <div class="card">
                         <div class="flex justify-between items-center mb-6">
@@ -622,25 +520,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <input type="text" id="userSearch" placeholder="Search employees..." class="input-field" onkeyup="renderUserTable()">
+                            <input type="text" id="userSearch" placeholder="Cari nama atau NIK..." class="input-field" onkeyup="renderUserTable()">
                         </div>
 
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Location</th>
+                                        <th>NIK</th>
+                                        <th>Nama</th>
                                         <th>Role</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="userTableBody">
-                                    <!-- Rows injected via JS -->
-                                </tbody>
+                                <tbody id="userTableBody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -649,20 +543,16 @@
         </main>
     </div>
 
-    <!-- ================= MODALS ================= -->
-
-    <!-- Edit Order Modal (Admin) -->
+    <!-- MODALS -->
     <div id="editOrderModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('editOrderModal')">
         <div class="modal-content">
             <h3 class="text-xl font-bold mb-4">Edit Order</h3>
             <form id="editOrderForm" onsubmit="saveOrderEdit(event)">
                 <input type="hidden" id="editOrderId">
-                
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Employee</label>
+                    <label class="block text-sm font-medium mb-1">Karyawan</label>
                     <input type="text" id="editOrderUserName" class="input-field bg-gray-100" disabled>
                 </div>
-
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Status</label>
                     <select id="editOrderStatus" class="input-field">
@@ -670,7 +560,6 @@
                         <option value="false">No (Skip)</option>
                     </select>
                 </div>
-
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Preference</label>
                     <select id="editOrderPref" class="input-field">
@@ -679,17 +568,14 @@
                         <option value="Vegetarian">Vegetarian</option>
                     </select>
                 </div>
-
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Allergy</label>
                     <input type="text" id="editOrderAllergy" class="input-field">
                 </div>
-
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-1">Reason for Change <span class="text-red-500">*</span></label>
                     <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..."></textarea>
                 </div>
-
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeModal('editOrderModal')" class="btn btn-secondary">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -698,61 +584,31 @@
         </div>
     </div>
 
-    <!-- User Modal (Add/Edit) -->
     <div id="userModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('userModal')">
         <div class="modal-content">
             <h3 id="userModalTitle" class="text-xl font-bold mb-4">Add Employee</h3>
             <form id="userForm" onsubmit="saveUser(event)">
                 <input type="hidden" id="editUserId">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Full Name</label>
-                        <input type="text" id="userName" class="input-field" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" id="userEmail" class="input-field" required placeholder="@kanankiricreative.com">
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">NIK</label>
+                    <input type="text" id="userNik" class="input-field" required placeholder="Contoh: 92318">
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Department</label>
-                        <select id="userDept" class="input-field">
-                            <option value="Creative">Creative</option>
-                            <option value="Tech">Tech</option>
-                            <option value="HR">HR</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Operations">Operations</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Location</label>
-                        <select id="userLoc" class="input-field">
-                            <option value="Jakarta">Jakarta</option>
-                            <option value="Bandung">Bandung</option>
-                            <option value="Surabaya">Surabaya</option>
-                            <option value="Remote">Remote</option>
-                        </select>
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Nama Lengkap</label>
+                    <input type="text" id="userName" class="input-field" required>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Role</label>
-                        <select id="userRole" class="input-field">
-                            <option value="employee">Employee</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Password</label>
-                        <input type="text" id="userPassword" class="input-field" placeholder="Default: 123456">
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Role</label>
+                    <select id="userRole" class="input-field">
+                        <option value="employee">Employee</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
-
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <input type="text" id="userPassword" class="input-field" placeholder="Default: sama dengan NIK">
+                    <p class="text-xs text-gray-400 mt-1">Kosongkan untuk menggunakan NIK sebagai password</p>
+                </div>
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" onclick="closeModal('userModal')" class="btn btn-secondary">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Employee</button>
@@ -761,12 +617,10 @@
         </div>
     </div>
 
-    <!-- Vendor Modal -->
     <div id="vendorModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('vendorModal')">
         <div class="modal-content" style="max-width: 600px;">
             <h3 class="text-xl font-bold mb-2">Vendor Summary</h3>
             <p class="text-sm text-gray-500 mb-4" id="vendorDateDisplay"></p>
-
             <div class="grid grid-cols-3 gap-4 mb-6">
                 <div class="text-center p-3 bg-green-50 rounded-lg">
                     <div class="text-2xl font-bold text-green-600" id="vendorTotalYes">0</div>
@@ -781,10 +635,8 @@
                     <div class="text-xs text-purple-800">Vegetarian</div>
                 </div>
             </div>
-
             <label class="block text-sm font-medium mb-2">Generated Text:</label>
             <textarea id="vendorText" class="input-field font-mono text-sm bg-gray-50 mb-4" rows="6" readonly></textarea>
-
             <div class="flex gap-2">
                 <button onclick="copyVendorText()" class="btn btn-secondary flex-1">
                     <i class="fas fa-copy mr-2"></i> Copy to Clipboard
@@ -799,54 +651,78 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 transition-transform duration-300 z-50 flex items-center gap-3">
         <i class="fas fa-check-circle text-green-400"></i>
         <span id="toastMsg">Operation successful</span>
     </div>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // --- DATA & STATE MANAGEMENT ---
-        
-        // Initialize Data if empty
+        // SEMUA DATA KARYAWAN (50 orang)
+        const allEmployees = [
+            { nik: '92318', name: 'DINDA TIUR HANIFAH M', role: 'admin' },
+            { nik: '92301', name: 'Bilqis Putri Taqiyudhini', role: 'employee' },
+            { nik: '92306', name: 'NADIA MAYANG', role: 'employee' },
+            { nik: '92312', name: 'Giandinna Putriani', role: 'employee' },
+            { nik: '92320', name: 'Maria Rampengan', role: 'employee' },
+            { nik: '92327', name: 'Micky Ardian Ananta', role: 'employee' },
+            { nik: '01', name: 'Bella Citra Putri Maharani', role: 'employee' },
+            { nik: '92328', name: 'Dara Cinta Oriena', role: 'employee' },
+            { nik: '92332', name: 'Gelora Sukma Adawiyah', role: 'employee' },
+            { nik: '92333', name: 'Annisa Pinuja Nurmalawati', role: 'employee' },
+            { nik: '92337', name: 'Muhammad Hatman Hazazi Rabindranattagore', role: 'employee' },
+            { nik: '92339', name: 'Siti Nur Khotimah', role: 'employee' },
+            { nik: '92340', name: 'Dewa Lucky Riefky', role: 'employee' },
+            { nik: '92341', name: 'Elvaretta Saskia Sehnaz Hermawan', role: 'employee' },
+            { nik: '92350', name: 'RHENOVAN JODY REFASAN HERMAWAN', role: 'employee' },
+            { nik: '92353', name: 'Rifa Khairunnisa', role: 'employee' },
+            { nik: '92380', name: 'Marsella Auliya Putri', role: 'employee' },
+            { nik: '92381', name: 'Mia Sari Gurnita', role: 'employee' },
+            { nik: '92382', name: 'Raka Nizar Ahlam', role: 'employee' },
+            { nik: '92383', name: 'Tasya aulia putri', role: 'employee' },
+            { nik: '92385', name: 'Muhamad Fauzan adima', role: 'employee' },
+            { nik: '92386', name: 'Vischarizani Salsabilla', role: 'employee' },
+            { nik: '92387', name: 'Neva Chairunnisa Rizkiana', role: 'employee' },
+            { nik: '92389', name: 'Abdul Azis', role: 'employee' },
+            { nik: '92390', name: 'Rizqi Agung Setiawan', role: 'employee' },
+            { nik: '92392', name: 'Raudaya Tuzzahra', role: 'employee' },
+            { nik: '92393', name: 'Muhammad Ishaq', role: 'employee' },
+            { nik: '91394', name: 'Muhammad Idris Muzhahirul Haq', role: 'employee' },
+            { nik: '91395', name: 'Zini Fuji Astuti', role: 'employee' },
+            { nik: '91396', name: 'Nabila nurul jihan', role: 'employee' },
+            { nik: '91397', name: 'Mohammad Yusril Hidayatillah Emha', role: 'employee' },
+            { nik: '31398', name: 'Qisthy Anjani', role: 'employee' },
+            { nik: '91399', name: 'Gilar Virgyawan', role: 'employee' },
+            { nik: '91400', name: 'Ezra Putri Khairandi', role: 'employee' },
+            { nik: '91401', name: 'Gitchel Aulia', role: 'employee' },
+            { nik: '91402', name: 'Herawati Kusnandar', role: 'employee' },
+            { nik: '92316', name: 'Ulfa Lutfiah', role: 'employee' },
+            { nik: '91404', name: 'De Apit Nur', role: 'employee' },
+            { nik: '92405', name: 'andrew supir', role: 'employee' },
+            { nik: '92406', name: 'Daffa Aqshal Maulana', role: 'employee' },
+            { nik: '92407', name: 'Dimas Alessandro', role: 'employee' },
+            { nik: '92408', name: 'Najla Shadrina Atthaya', role: 'employee' },
+            { nik: '92410', name: 'SANDY MAULUDIN', role: 'employee' },
+            { nik: '92411', name: 'SAFIRANADYA FITHRI SUNGKAR', role: 'employee' },
+            { nik: '92412', name: 'Gema Bakti Kusumah', role: 'employee' },
+            { nik: '92413', name: 'Dini apriyanti', role: 'employee' },
+            { nik: '92414', name: 'Prilastina Dwiputri Utami', role: 'employee' },
+            { nik: '92415', name: 'Reuben Yafi Setiawan', role: 'employee' },
+            { nik: '92416', name: 'Sendy Krisnawati', role: 'employee' },
+            { nik: '92418', name: 'Lola Juliadrini', role: 'employee' }
+        ];
+
         const initData = () => {
             if (!localStorage.getItem('kk_users')) {
-                const defaultUsers = [
-                    {
-                        id: 'u1',
-                        name: 'Dinda Tiur',
-                        email: 'dindatiur@kanankiricreative.com',
-                        password: '123456',
-                        department: 'HR',
-                        location: 'Jakarta',
-                        role: 'admin',
-                        isActive: true,
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'u2',
-                        name: 'Budi Santoso',
-                        email: 'budi@kanankiricreative.com',
-                        password: '123456',
-                        department: 'Tech',
-                        location: 'Bandung',
-                        role: 'employee',
-                        isActive: true,
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'u3',
-                        name: 'Ani Wijaya',
-                        email: 'ani@kanankiricreative.com',
-                        password: '123456',
-                        department: 'Creative',
-                        location: 'Jakarta',
-                        role: 'employee',
-                        isActive: true,
-                        createdAt: new Date().toISOString()
-                    }
-                ];
+                const defaultUsers = allEmployees.map((emp, index) => ({
+                    id: 'u' + (index + 1),
+                    nik: emp.nik,
+                    name: emp.name,
+                    password: emp.role === 'admin' ? '123456' : emp.nik,
+                    location: 'Bandung',
+                    role: emp.role,
+                    isActive: true,
+                    createdAt: new Date().toISOString()
+                }));
                 localStorage.setItem('kk_users', JSON.stringify(defaultUsers));
                 localStorage.setItem('kk_orders', JSON.stringify([]));
             }
@@ -861,30 +737,21 @@
         let currentAdminTab = 'dashboard';
         let currentOrderFilter = 'all';
 
-        // --- AUTHENTICATION ---
-
         function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const nik = document.getElementById('loginNik').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            // Domain validation
-            if (!email.endsWith('@kanankiricreative.com')) {
-                showToast('Invalid domain. Use @kanankiricreative.com', 'error');
-                return;
-            }
-
             const users = getUsers();
-            const user = users.find(u => u.email === email && u.password === password && u.isActive);
+            const user = users.find(u => u.nik === nik && u.password === password && u.isActive);
 
             if (user) {
                 currentUser = user;
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('appView').classList.remove('hidden');
                 
-                // Update UI
                 document.getElementById('userNameDisplay').textContent = user.name;
-                document.getElementById('userRoleDisplay').textContent = user.role === 'admin' ? 'Administrator' : 'Employee';
+                document.getElementById('userNikDisplay').textContent = 'NIK: ' + user.nik;
                 
                 if (user.role === 'admin') {
                     document.getElementById('adminView').classList.remove('hidden');
@@ -895,9 +762,9 @@
                     document.getElementById('adminView').classList.add('hidden');
                     initEmployeeView();
                 }
-                showToast(`Welcome, ${user.name}!`);
+                showToast(`Selamat datang, ${user.name}!`);
             } else {
-                showToast('Invalid credentials or inactive account', 'error');
+                showToast('NIK atau password salah', 'error');
             }
         }
 
@@ -908,19 +775,12 @@
             document.getElementById('loginForm').reset();
         }
 
-        // --- EMPLOYEE VIEW LOGIC ---
-
         function initEmployeeView() {
-            // Set tomorrow's date
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('tomorrowDateDisplay').textContent = tomorrow.toLocaleDateString('id-ID', options);
-
-            // Set profile info
-            document.getElementById('empDept').textContent = currentUser.department;
-            document.getElementById('empLoc').textContent = currentUser.location;
-
+            document.getElementById('empNik').textContent = currentUser.nik;
             checkExistingOrder();
             renderHistory();
         }
@@ -934,12 +794,6 @@
             const existingOrder = orders.find(o => o.userId === currentUser.id && o.date === dateStr);
 
             const now = new Date();
-            const cutoff = new Date();
-            cutoff.setHours(16, 0, 0, 0); // 16:00 WIB (assuming server time is WIB or we adjust)
-
-            // Simple check: if current time > 16:00, cutoff is passed for today (for tomorrow's lunch)
-            // Logic: If now is today after 16:00, tomorrow's order is locked.
-            
             const isCutoffPassed = now.getHours() >= 16;
 
             const formContainer = document.getElementById('orderFormContainer');
@@ -953,7 +807,7 @@
                 statusMsg.classList.remove('hidden');
                 statusIcon.textContent = '⏰';
                 statusTitle.textContent = 'Cutoff Time Passed';
-                statusDesc.textContent = 'You missed the 16:00 WIB deadline for tomorrow\'s lunch.';
+                statusDesc.textContent = 'Anda melewati batas waktu 16:00 WIB untuk pesanan besok.';
                 statusTitle.className = 'text-2xl font-bold mb-2 text-red-500';
                 return;
             }
@@ -963,13 +817,13 @@
                 statusMsg.classList.remove('hidden');
                 if (existingOrder.willEat) {
                     statusIcon.textContent = '🍱';
-                    statusTitle.textContent = 'You are joining!';
-                    statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Allergy: ${existingOrder.allergy || '-'}`;
+                    statusTitle.textContent = 'Anda ikut makan!';
+                    statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Alergi: ${existingOrder.allergy || '-'}`;
                     statusTitle.className = 'text-2xl font-bold mb-2 text-green-600';
                 } else {
                     statusIcon.textContent = '❌';
-                    statusTitle.textContent = 'You skipped lunch';
-                    statusDesc.textContent = 'See you tomorrow!';
+                    statusTitle.textContent = 'Anda tidak ikut makan';
+                    statusDesc.textContent = 'Sampai jumpa besok!';
                     statusTitle.className = 'text-2xl font-bold mb-2 text-gray-600';
                 }
             } else {
@@ -1000,8 +854,6 @@
             const dateStr = tomorrow.toISOString().split('T')[0];
 
             const orders = getOrders();
-            
-            // Remove existing order for this date if any (shouldn't happen due to UI checks, but safety first)
             const filteredOrders = orders.filter(o => !(o.userId === currentUser.id && o.date === dateStr));
 
             const newOrder = {
@@ -1020,16 +872,15 @@
             filteredOrders.push(newOrder);
             saveOrders(filteredOrders);
             
-            showToast('Order submitted successfully!');
+            showToast('Pesanan berhasil dikirim!');
             checkExistingOrder();
             renderHistory();
         }
 
         function resetOrderForm() {
-            // Only allow reset if before cutoff
             const now = new Date();
             if (now.getHours() >= 16) {
-                showToast('Cannot change order after 16:00 WIB', 'error');
+                showToast('Tidak bisa mengubah pesanan setelah 16:00 WIB', 'error');
                 return;
             }
             
@@ -1050,10 +901,10 @@
             const orders = getOrders()
                 .filter(o => o.userId === currentUser.id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 10); // Last 10 entries
+                .slice(0, 10);
 
             if (orders.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">No history found</div>';
+                list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">Belum ada riwayat</div>';
                 return;
             }
 
@@ -1074,8 +925,6 @@
                 `;
             }).join('');
         }
-
-        // --- ADMIN VIEW LOGIC ---
 
         function switchAdminTab(tab) {
             currentAdminTab = tab;
@@ -1109,9 +958,7 @@
 
         function renderAdminDashboard() {
             const dateFilter = document.getElementById('adminDateFilter').value;
-            const deptFilter = document.getElementById('adminDeptFilter').value;
             
-            // Default to tomorrow if no date selected
             const targetDate = dateFilter || (() => {
                 const t = new Date();
                 t.setDate(t.getDate() + 1);
@@ -1121,23 +968,15 @@
             const users = getUsers().filter(u => u.isActive);
             const orders = getOrders().filter(o => o.date === targetDate);
             
-            // Map orders to users
             const userOrders = users.map(u => {
                 const order = orders.find(o => o.userId === u.id);
                 return { ...u, order };
             });
 
-            // Filter by dept
             let filtered = userOrders;
-            if (deptFilter) {
-                filtered = filtered.filter(u => u.department === deptFilter);
-            }
-
-            // Filter by subtab
             if (currentOrderFilter === 'yes') filtered = filtered.filter(u => u.order && u.order.willEat);
             if (currentOrderFilter === 'no') filtered = filtered.filter(u => u.order && !u.order.willEat);
 
-            // Stats
             const totalYes = userOrders.filter(u => u.order && u.order.willEat).length;
             const totalNo = userOrders.filter(u => u.order && !u.order.willEat).length;
             const totalPending = userOrders.filter(u => !u.order).length;
@@ -1147,7 +986,6 @@
             document.getElementById('statPending').textContent = totalPending;
             document.getElementById('statTotal').textContent = users.length;
 
-            // Table
             const tbody = document.getElementById('adminOrderTable');
             tbody.innerHTML = filtered.map(u => {
                 const hasOrder = !!u.order;
@@ -1157,12 +995,10 @@
                 
                 return `
                     <tr>
+                        <td class="font-mono font-medium">${u.nik}</td>
                         <td>
                             <div class="font-medium text-gray-900">${u.name}</div>
-                            <div class="text-xs text-gray-500">${u.email}</div>
                         </td>
-                        <td>${u.department}</td>
-                        <td>${u.location}</td>
                         <td>${status}</td>
                         <td>${hasOrder ? u.order.preference : '-'}</td>
                         <td>${hasOrder ? u.order.allergy || '-' : '-'}</td>
@@ -1181,21 +1017,17 @@
             }).join('');
         }
 
-        // --- ADMIN: USER MANAGEMENT ---
-
         function renderUserTable() {
             const search = document.getElementById('userSearch').value.toLowerCase();
             const users = getUsers().filter(u => 
-                u.isActive && (u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search))
+                u.isActive && (u.name.toLowerCase().includes(search) || u.nik.includes(search))
             );
 
             const tbody = document.getElementById('userTableBody');
             tbody.innerHTML = users.map(u => `
                 <tr>
+                    <td class="font-mono font-medium">${u.nik}</td>
                     <td class="font-medium">${u.name}</td>
-                    <td class="text-xs">${u.email}</td>
-                    <td>${u.department}</td>
-                    <td>${u.location}</td>
                     <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role}</span></td>
                     <td><span class="badge badge-green">Active</span></td>
                     <td>
@@ -1207,7 +1039,7 @@
         }
 
         function openUserModal() {
-            document.getElementById('userModalTitle').textContent = 'Add Employee';
+            document.getElementById('userModalTitle').textContent = 'Tambah Karyawan';
             document.getElementById('userForm').reset();
             document.getElementById('editUserId').value = '';
             document.getElementById('userModal').classList.remove('hidden');
@@ -1218,12 +1050,10 @@
             const u = users.find(user => user.id === id);
             if (!u) return;
 
-            document.getElementById('userModalTitle').textContent = 'Edit Employee';
+            document.getElementById('userModalTitle').textContent = 'Edit Karyawan';
             document.getElementById('editUserId').value = u.id;
+            document.getElementById('userNik').value = u.nik;
             document.getElementById('userName').value = u.name;
-            document.getElementById('userEmail').value = u.email;
-            document.getElementById('userDept').value = u.department;
-            document.getElementById('userLoc').value = u.location;
             document.getElementById('userRole').value = u.role;
             document.getElementById('userPassword').value = u.password;
             
@@ -1233,35 +1063,26 @@
         function saveUser(e) {
             e.preventDefault();
             const id = document.getElementById('editUserId').value;
+            const nik = document.getElementById('userNik').value.trim();
             const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const dept = document.getElementById('userDept').value;
-            const loc = document.getElementById('userLoc').value;
             const role = document.getElementById('userRole').value;
-            const password = document.getElementById('userPassword').value || '123456';
-
-            if (!email.endsWith('@kanankiricreative.com')) {
-                showToast('Email must use @kanankiricreative.com domain', 'error');
-                return;
-            }
+            const password = document.getElementById('userPassword').value || nik;
 
             let users = getUsers();
 
             if (id) {
-                // Edit
                 const idx = users.findIndex(u => u.id === id);
                 if (idx !== -1) {
-                    users[idx] = { ...users[idx], name, email, department: dept, location: loc, role, password };
+                    users[idx] = { ...users[idx], nik, name, role, password };
                 }
             } else {
-                // Add
-                if (users.find(u => u.email === email)) {
-                    showToast('Email already exists', 'error');
+                if (users.find(u => u.nik === nik)) {
+                    showToast('NIK sudah terdaftar', 'error');
                     return;
                 }
                 users.push({
                     id: 'u_' + Date.now(),
-                    name, email, password, department: dept, location: loc, role,
+                    nik, name, password, location: 'Bandung', role,
                     isActive: true,
                     createdAt: new Date().toISOString()
                 });
@@ -1270,22 +1091,20 @@
             saveUsers(users);
             closeModal('userModal');
             renderUserTable();
-            showToast(id ? 'Employee updated' : 'Employee added');
+            showToast(id ? 'Karyawan diperbarui' : 'Karyawan ditambahkan');
         }
 
         function deleteUser(id) {
-            if (!confirm('Are you sure? This will soft delete the user.')) return;
+            if (!confirm('Yakin ingin menghapus karyawan ini?')) return;
             let users = getUsers();
             const idx = users.findIndex(u => u.id === id);
             if (idx !== -1) {
                 users[idx].isActive = false;
                 saveUsers(users);
                 renderUserTable();
-                showToast('User deactivated');
+                showToast('Karyawan dinonaktifkan');
             }
         }
-
-        // --- ADMIN: ORDER MANAGEMENT ---
 
         function openEditOrder(userId, date) {
             const users = getUsers();
@@ -1300,7 +1119,6 @@
             document.getElementById('editOrderAllergy').value = order ? order.allergy : '';
             document.getElementById('editOrderReason').value = '';
             
-            // Store context for saving
             document.getElementById('editOrderForm').dataset.userId = userId;
             document.getElementById('editOrderForm').dataset.date = date;
 
@@ -1318,14 +1136,13 @@
             const reason = document.getElementById('editOrderReason').value;
 
             if (!reason) {
-                alert('Audit reason is required');
+                alert('Alasan perubahan wajib diisi');
                 return;
             }
 
             let orders = getOrders();
             
             if (orderId !== 'new') {
-                // Update existing
                 const idx = orders.findIndex(o => o.id === orderId);
                 if (idx !== -1) {
                     orders[idx] = {
@@ -1337,7 +1154,6 @@
                     };
                 }
             } else {
-                // Create new (if admin adds for user who hasn't filled)
                 orders.push({
                     id: 'ord_' + Date.now(),
                     userId, date, willEat, preference, allergy,
@@ -1351,18 +1167,16 @@
             saveOrders(orders);
             closeModal('editOrderModal');
             renderAdminDashboard();
-            showToast('Order updated successfully');
+            showToast('Pesanan diperbarui');
         }
 
         function deleteOrder(orderId) {
-            if (!confirm('Delete this order?')) return;
+            if (!confirm('Hapus pesanan ini?')) return;
             let orders = getOrders().filter(o => o.id !== orderId);
             saveOrders(orders);
             renderAdminDashboard();
-            showToast('Order deleted');
+            showToast('Pesanan dihapus');
         }
-
-        // --- VENDOR INTEGRATION ---
 
         function openVendorModal() {
             const dateFilter = document.getElementById('adminDateFilter').value;
@@ -1372,7 +1186,7 @@
                 return t.toISOString().split('T')[0];
             })();
 
-            document.getElementById('vendorDateDisplay').textContent = `Date: ${targetDate}`;
+            document.getElementById('vendorDateDisplay').textContent = `Tanggal: ${targetDate}`;
 
             const orders = getOrders().filter(o => o.date === targetDate && o.willEat);
             
@@ -1384,22 +1198,19 @@
             document.getElementById('vendorNoSpicy').textContent = noSpicy;
             document.getElementById('vendorVeg').textContent = veg;
 
-            // Generate Text
-            const text = `ORDER LUNCH - PT Kanan Kiri Mediaworks
-Date: ${targetDate}
+            const text = `ORDER MAKAN SIANG - PT Kanan Kiri Mediaworks
+Tanggal: ${targetDate}
 Total: ${totalYes} pax
 
-Details:
+Detail:
 - Normal: ${totalYes - noSpicy - veg} pax
 - Tidak Pedas: ${noSpicy} pax
 - Vegetarian: ${veg} pax
 
-Notes: Please deliver to office by 12:00 PM.`;
+Catatan: Mohon antar ke kantor pukul 12:00 WIB.`;
             
             document.getElementById('vendorText').value = text;
-
-            // Mailto
-            document.getElementById('mailtoLink').href = `mailto:vendor@example.com?subject=Lunch Order ${targetDate}&body=${encodeURIComponent(text)}`;
+            document.getElementById('mailtoLink').href = `mailto:vendor@example.com?subject=Order Makan Siang ${targetDate}&body=${encodeURIComponent(text)}`;
 
             document.getElementById('vendorModal').classList.remove('hidden');
         }
@@ -1409,7 +1220,7 @@ Notes: Please deliver to office by 12:00 PM.`;
             copyText.select();
             copyText.setSelectionRange(0, 99999); 
             navigator.clipboard.writeText(copyText.value);
-            showToast('Copied to clipboard!');
+            showToast('Tersalin ke clipboard!');
         }
 
         function exportCSV() {
@@ -1423,15 +1234,14 @@ Notes: Please deliver to office by 12:00 PM.`;
             const users = getUsers().filter(u => u.isActive);
             const orders = getOrders().filter(o => o.date === targetDate);
             
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Name,Department,Location,Status,Preference,Allergy\n";
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "NIK,Nama,Status,Preference,Alergi\n";
 
             users.forEach(u => {
                 const order = orders.find(o => o.userId === u.id);
                 const row = [
+                    u.nik,
                     u.name,
-                    u.department,
-                    u.location,
                     order ? (order.willEat ? 'YES' : 'NO') : 'PENDING',
                     order ? order.preference : '',
                     order ? (order.allergy || '') : ''
@@ -1442,13 +1252,11 @@ Notes: Please deliver to office by 12:00 PM.`;
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `lunch_order_${targetDate}.csv`);
+            link.setAttribute("download", `order_makan_${targetDate}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
-
-        // --- UTILS ---
 
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
@@ -1472,10 +1280,8 @@ Notes: Please deliver to office by 12:00 PM.`;
             }, 3000);
         }
 
-        // Initialize
         initData();
         
-        // Set default date filter to tomorrow
         const tmr = new Date();
         tmr.setDate(tmr.getDate() + 1);
         document.getElementById('adminDateFilter').value = tmr.toISOString().split('T')[0];
