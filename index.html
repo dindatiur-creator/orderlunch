@@ -2,10 +2,12 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lunch Order | PT Kanan Kiri Mediaworks</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel import/export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
     
     <style>
         :root {
@@ -29,12 +31,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            font-size: 16px;
+        }
+
         body {
             font-family: var(--font-primary);
             background-color: #f1f5f9;
             color: #1e293b;
             overflow-x: hidden;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Corporate Gradient Background */
@@ -42,6 +50,7 @@
             background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
             position: relative;
             overflow: hidden;
+            min-height: 100vh;
         }
         
         .bg-gradient-brand::before {
@@ -75,7 +84,12 @@
         .hidden { display: none !important; }
         .block { display: block; }
         .grid { display: grid; }
+        .flex-wrap { flex-wrap: wrap; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
         
+        .p-3 { padding: 0.75rem; }
         .p-4 { padding: 1rem; }
         .p-6 { padding: 1.5rem; }
         .p-8 { padding: 2rem; }
@@ -87,13 +101,14 @@
         .mt-6 { margin-top: 1.5rem; }
         .mr-2 { margin-right: 0.5rem; }
         .mx-auto { margin-left: auto; margin-right: auto; }
+        .w-full { width: 100%; }
 
         /* Corporate Card Styling */
         .card {
             background: white;
             border-radius: 16px;
             box-shadow: var(--shadow-lg);
-            padding: 2rem;
+            padding: 1.5rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(226, 232, 240, 0.8);
         }
@@ -128,7 +143,7 @@
 
         /* Corporate Button Styling */
         .btn {
-            padding: 0.875rem 1.75rem;
+            padding: 0.75rem 1.25rem;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
@@ -139,8 +154,9 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 0.025em;
+            white-space: nowrap;
         }
 
         .btn-primary {
@@ -191,7 +207,7 @@
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(12px);
             box-shadow: 0 1px 3px rgba(139, 92, 246, 0.1);
-            padding: 1rem 2rem;
+            padding: 0.75rem 1rem;
             position: sticky;
             top: 0;
             z-index: 50;
@@ -199,15 +215,15 @@
         }
 
         .logo-img {
-            height: 80px;
+            height: 60px;
             width: auto;
             object-fit: contain;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         .logo-img-small {
-            height: 45px;
+            height: 36px;
             width: auto;
             object-fit: contain;
         }
@@ -235,28 +251,30 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             box-shadow: var(--shadow-sm);
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            min-width: 600px;
         }
 
         th {
             background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%);
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1rem;
             font-weight: 600;
             color: #6b21a8;
             text-transform: uppercase;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.1em;
             border-bottom: 2px solid #e9d5ff;
         }
 
         td {
-            padding: 1rem 1.5rem;
+            padding: 0.875rem 1rem;
             border-bottom: 1px solid #f1f5f9;
             color: #334155;
             font-weight: 500;
@@ -272,14 +290,15 @@
 
         /* Corporate Badges */
         .badge {
-            padding: 0.375rem 0.875rem;
+            padding: 0.25rem 0.625rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.025em;
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
+            white-space: nowrap;
         }
         
         .badge-green { 
@@ -318,7 +337,7 @@
         
         .modal-content {
             background: white;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 20px;
             width: 100%;
             max-width: 500px;
@@ -330,17 +349,80 @@
         }
 
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+        /* Responsive Breakpoints */
+        @media (min-width: 640px) {
+            .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sm\:flex-row { flex-direction: row; }
+            .sm\:hidden { display: none !important; }
+            .sm\:block { display: block !important; }
+        }
+
         @media (min-width: 768px) {
             .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
             .md\:flex-row { flex-direction: row; }
+            .md\:col-span-2 { grid-column: span 2 / span 2; }
+            .md\:col-span-1 { grid-column: span 1 / span 1; }
+            .md\:p-8 { padding: 2rem; }
+            .md\:hidden { display: none !important; }
+            .md\:block { display: block !important; }
+            .md\:text-right { text-align: right; }
+            .md\:w-auto { width: auto; }
+            .md\:text-lg { font-size: 1.125rem; }
+            .md\:py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            
+            .navbar {
+                padding: 1rem 2rem;
+            }
+            
+            .logo-img {
+                height: 80px;
+            }
+            
+            .logo-img-small {
+                height: 45px;
+            }
+            
+            .card {
+                padding: 2rem;
+            }
+            
+            .btn {
+                padding: 0.875rem 1.75rem;
+                font-size: 0.95rem;
+            }
+            
+            th {
+                padding: 1rem 1.5rem;
+                font-size: 0.7rem;
+            }
+            
+            td {
+                padding: 1rem 1.5rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+                min-width: auto;
+            }
+            
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #f1f5f9; 
@@ -356,7 +438,7 @@
 
         /* Corporate Stat Cards */
         .stat-card {
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 16px;
             color: #FF2D92;
             position: relative;
@@ -382,32 +464,64 @@
 
         .stat-card .icon {
             position: absolute;
-            right: 1rem;
-            top: 1rem;
-            font-size: 3rem;
+            right: 0.75rem;
+            top: 0.75rem;
+            font-size: 2rem;
             opacity: 0.2;
+        }
+
+        @media (min-width: 768px) {
+            .stat-card {
+                padding: 1.5rem;
+            }
+            .stat-card .icon {
+                right: 1rem;
+                top: 1rem;
+                font-size: 3rem;
+            }
         }
 
         /* Welcome Text */
         .welcome-text {
             font-family: var(--font-display);
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        @media (min-width: 768px) {
+            .welcome-text {
+                font-size: 2.5rem;
+            }
+        }
+
         .subtitle-text {
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0.9;
             font-weight: 300;
             letter-spacing: 0.05em;
+        }
+
+        @media (min-width: 768px) {
+            .subtitle-text {
+                font-size: 1rem;
+            }
         }
 
         /* Tab Styling */
         .admin-tab {
             position: relative;
             transition: all 0.3s;
+            font-size: 0.85rem;
+            padding-bottom: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .admin-tab {
+                font-size: 1rem;
+                padding-bottom: 1rem;
+            }
         }
         
         .admin-tab.active-tab {
@@ -429,6 +543,13 @@
         .order-option {
             transition: all 0.3s ease;
             cursor: pointer;
+            padding: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .order-option {
+                padding: 1.25rem;
+            }
         }
         
         .order-option:hover {
@@ -444,21 +565,31 @@
         /* Toast Notification */
         #toast {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 1rem;
+            right: 1rem;
+            left: 1rem;
             background: white;
             color: #1e293b;
-            padding: 1rem 1.5rem;
+            padding: 0.875rem 1.25rem;
             border-radius: 12px;
             box-shadow: var(--shadow-xl);
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            transform: translateY(150%);
+            transform: translateY(200%);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 200;
             border-left: 4px solid #8B5CF6;
-            min-width: 300px;
+        }
+
+        @media (min-width: 640px) {
+            #toast {
+                left: auto;
+                min-width: 300px;
+                bottom: 2rem;
+                right: 2rem;
+                padding: 1rem 1.5rem;
+            }
         }
 
         #toast.show {
@@ -471,22 +602,41 @@
 
         /* Header Section */
         .page-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
             border-bottom: 2px solid #e2e8f0;
+        }
+
+        @media (min-width: 768px) {
+            .page-header {
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+            }
         }
 
         .page-title {
             font-family: var(--font-display);
-            font-size: 1.875rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 0.25rem;
         }
 
+        @media (min-width: 768px) {
+            .page-title {
+                font-size: 1.875rem;
+            }
+        }
+
         .page-subtitle {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
         }
 
         /* Info Box */
@@ -494,23 +644,45 @@
             background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
             border: 1px solid #ddd6fe;
             border-radius: 12px;
-            padding: 1rem 1.25rem;
+            padding: 0.875rem 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
+            gap: 0.625rem;
+            margin-bottom: 1.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .info-box {
+                padding: 1rem 1.25rem;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
         }
 
         .info-box i {
             color: #8B5CF6;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .info-box i {
+                font-size: 1.25rem;
+            }
         }
 
         .info-box p {
             color: #6d28d9;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.5;
+            margin: 0;
+        }
+
+        @media (min-width: 768px) {
+            .info-box p {
+                font-size: 0.9rem;
+            }
         }
 
         /* Cutoff Warning */
@@ -518,30 +690,49 @@
             background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
             border: 1px solid #fecdd3;
             border-radius: 12px;
-            padding: 0.75rem 1rem;
+            padding: 0.5rem 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
+        @media (min-width: 768px) {
+            .cutoff-warning {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+            }
+        }
+
         .cutoff-warning i {
             color: #f43f5e;
-            font-size: 1rem;
+            font-size: 0.875rem;
         }
 
         .cutoff-warning span {
             color: #be123c;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .cutoff-warning span {
+                font-size: 0.85rem;
+            }
         }
 
         /* Status Display */
         .status-display {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem 1.5rem;
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             border-radius: 16px;
             border: 2px solid #86efac;
+        }
+
+        @media (min-width: 768px) {
+            .status-display {
+                padding: 3rem 2rem;
+            }
         }
 
         .status-display.cancelled {
@@ -559,9 +750,15 @@
             background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
             color: white;
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             position: relative;
             overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .profile-card {
+                padding: 1.5rem;
+            }
         }
 
         .profile-card::before {
@@ -577,9 +774,16 @@
         .profile-card h3 {
             position: relative;
             z-index: 1;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            margin-bottom: 0.875rem;
             opacity: 0.9;
+        }
+
+        @media (min-width: 768px) {
+            .profile-card h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
         }
 
         .profile-card .info-row {
@@ -587,8 +791,16 @@
             z-index: 1;
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
+            padding: 0.375rem 0;
             border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .profile-card .info-row {
+                padding: 0.5rem 0;
+                font-size: 0.9rem;
+            }
         }
 
         .profile-card .info-row:last-child {
@@ -597,12 +809,10 @@
 
         .profile-card .label {
             opacity: 0.8;
-            font-size: 0.85rem;
         }
 
         .profile-card .value {
             font-weight: 600;
-            font-size: 0.9rem;
         }
 
         /* History Item */
@@ -610,12 +820,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0.75rem;
             background: #f8fafc;
             border-radius: 10px;
             border: 1px solid #e2e8f0;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             transition: all 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .history-item {
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+            }
         }
 
         .history-item:hover {
@@ -626,26 +843,45 @@
         .history-item .date {
             font-weight: 600;
             color: #334155;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .history-item .date {
+                font-size: 0.9rem;
+            }
         }
 
         .history-item .preference {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #64748b;
             margin-top: 0.25rem;
         }
 
+        @media (min-width: 768px) {
+            .history-item .preference {
+                font-size: 0.8rem;
+            }
+        }
+
         /* Sub Tab Buttons */
         .subtab-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.375rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.2s;
             border: none;
             background: #f1f5f9;
             color: #64748b;
             cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .subtab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
         }
 
         .subtab-btn:hover {
@@ -655,13 +891,13 @@
         .subtab-btn.active {
             background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
             color: white;
-            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
         }
 
         /* Action Buttons in Table */
         .action-btn {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
@@ -669,7 +905,17 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            margin-right: 0.5rem;
+            margin-right: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .action-btn {
+                width: 32px;
+                height: 32px;
+                margin-right: 0.5rem;
+                font-size: 0.875rem;
+            }
         }
 
         .action-btn.edit {
@@ -695,11 +941,17 @@
         /* Vendor Summary Stats */
         .vendor-stat {
             text-align: center;
-            padding: 1.25rem;
+            padding: 1rem;
             border-radius: 12px;
             background: white;
             border: 2px solid #e2e8f0;
             transition: all 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .vendor-stat {
+                padding: 1.25rem;
+            }
         }
 
         .vendor-stat:hover {
@@ -723,16 +975,28 @@
         }
 
         .vendor-stat .number {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
         }
 
+        @media (min-width: 768px) {
+            .vendor-stat .number {
+                font-size: 2rem;
+            }
+        }
+
         .vendor-stat .label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+
+        @media (min-width: 768px) {
+            .vendor-stat .label {
+                font-size: 0.8rem;
+            }
         }
 
         .vendor-stat.yes .number { color: #059669; }
@@ -741,6 +1005,58 @@
         .vendor-stat.nospicy .label { color: #a16207; }
         .vendor-stat.veg .number { color: #7c3aed; }
         .vendor-stat.veg .label { color: #6d28d9; }
+
+        /* Mobile-specific fixes */
+        @media (max-width: 767px) {
+            .mobile-stack {
+                flex-direction: column !important;
+                width: 100%;
+            }
+            
+            .mobile-full {
+                width: 100% !important;
+            }
+            
+            .mobile-text-sm {
+                font-size: 0.8rem !important;
+            }
+            
+            .mobile-p-2 {
+                padding: 0.5rem !important;
+            }
+            
+            .mobile-gap-2 {
+                gap: 0.5rem !important;
+            }
+        }
+
+        /* Import/Export buttons */
+        .import-export-container {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .import-export-container {
+                gap: 0.75rem;
+            }
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            cursor: pointer;
+        }
     </style>
 <base target="_blank">
 </head>
@@ -749,14 +1065,14 @@
     <!-- ================= LOGIN VIEW ================= -->
     <div id="loginView" class="min-h-screen flex flex-col items-center justify-center bg-gradient-brand p-4">
         <div class="card w-full max-w-md animate-fade-in text-center relative z-10">
-            <div class="mb-8">
+            <div class="mb-6 md:mb-8">
                 <img src="https://i.imgur.com/T3gdVQU.png" alt="Kanan Kiri Logo" class="logo-img mx-auto" onerror="this.src='https://via.placeholder.com/200x80/667eea/ffffff?text=KANAN+KIRI'">
                 <h1 class="welcome-text text-gradient">Kanan Kiri</h1>
                 <p class="subtitle-text text-gray-500">Lunch Ordering System</p>
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="mb-5 text-left">
+                <div class="mb-4 md:mb-5 text-left">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">NIK Karyawan</label>
                     <div class="relative">
                         <i class="fas fa-id-card absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -764,7 +1080,7 @@
                     </div>
                 </div>
                 
-                <div class="mb-6 text-left">
+                <div class="mb-5 md:mb-6 text-left">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -772,7 +1088,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-full text-lg py-3">
+                <button type="submit" class="btn btn-primary w-full md:text-lg md:py-3">
                     <i class="fas fa-sign-in-alt mr-2"></i>Sign In
                 </button>
             </form>
@@ -784,40 +1100,41 @@
     <div id="appView" class="hidden min-h-screen flex flex-col">
         
         <nav class="navbar flex justify-between items-center">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 md:gap-4">
                 <img src="https://i.imgur.com/T3gdVQU.png" alt="Kanan Kiri Logo" class="logo-img-small" onerror="this.src='https://via.placeholder.com/120x45/667eea/ffffff?text=KK'">
                 <div class="hidden sm:block">
-                    <h1 class="font-bold text-gray-800 leading-tight text-lg">Lunch Order</h1>
+                    <h1 class="font-bold text-gray-800 leading-tight text-base md:text-lg">Lunch Order</h1>
                     <p class="text-xs text-gray-500">Kanan Kiri Mediaworks</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 md:gap-4">
                 <div class="text-right hidden md:block">
                     <p id="userNameDisplay" class="text-sm font-bold text-gray-800">User Name</p>
                     <p id="userNikDisplay" class="text-xs text-gray-500">NIK</p>
                 </div>
-                <button onclick="logout()" class="btn btn-secondary py-2 px-3 text-sm">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                <button onclick="logout()" class="btn btn-secondary py-2 px-2 md:px-3 text-xs md:text-sm">
+                    <i class="fas fa-sign-out-alt md:mr-2"></i><span class="hidden md:inline">Logout</span>
                 </button>
             </div>
         </nav>
 
-        <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+        <main class="flex-1 p-3 md:p-8 max-w-7xl mx-auto w-full">
             
             <!-- EMPLOYEE VIEW -->
             <div id="employeeView" class="hidden animate-fade-in">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     
                     <div class="md:col-span-2">
-                        <div class="card mb-6">
-                            <div class="flex justify-between items-start mb-6">
+                        <div class="card mb-4 md:mb-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start mb-4 md:mb-6 gap-3">
                                 <div>
                                     <h2 class="page-title" id="orderTitle">Lunch Order</h2>
                                     <p class="page-subtitle" id="tomorrowDateDisplay">Loading date...</p>
                                 </div>
-                                <div class="text-right cutoff-warning py-2 px-4">
-                                    <span class="text-sm"><i class="fas fa-clock mr-2"></i>Cutoff: 16:00 WIB</span>
+                                <div class="cutoff-warning">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Cutoff: 16:00 WIB</span>
                                 </div>
                             </div>
 
@@ -828,29 +1145,29 @@
                                 </div>
 
                                 <form id="lunchOrderForm" onsubmit="handleOrderSubmit(event)">
-                                    <div class="mb-6">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-3">Will you join lunch tomorrow?</label>
-                                        <div class="grid grid-cols-2 gap-4">
+                                    <div class="mb-5 md:mb-6">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-3">Will you join lunch?</label>
+                                        <div class="grid grid-cols-2 gap-3 md:gap-4">
                                             <label class="cursor-pointer relative">
                                                 <input type="radio" name="willEat" value="true" class="peer sr-only" checked onchange="togglePreference(true)">
-                                                <div class="order-option p-5 rounded-xl border-2 border-gray-200 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center hover:bg-gray-50">
-                                                    <i class="fas fa-utensils text-3xl mb-3 text-gray-300 peer-checked:text-green-500 transition-colors"></i>
-                                                    <div class="font-bold text-gray-700 peer-checked:text-green-700">Yes, I'll Eat</div>
-                                                    <div class="text-xs text-gray-400 mt-1">Count me in!</div>
+                                                <div class="order-option rounded-xl border-2 border-gray-200 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-utensils text-2xl md:text-3xl mb-2 md:mb-3 text-gray-300 peer-checked:text-green-500 transition-colors"></i>
+                                                    <div class="font-bold text-gray-700 peer-checked:text-green-700 text-sm md:text-base">Yes, I'll Eat</div>
+                                                    <div class="text-xs text-gray-400 mt-1 hidden sm:block">Count me in!</div>
                                                 </div>
                                             </label>
                                             <label class="cursor-pointer relative">
                                                 <input type="radio" name="willEat" value="false" class="peer sr-only" onchange="togglePreference(false)">
-                                                <div class="order-option p-5 rounded-xl border-2 border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center hover:bg-gray-50">
-                                                    <i class="fas fa-times text-3xl mb-3 text-gray-300 peer-checked:text-red-500 transition-colors"></i>
-                                                    <div class="font-bold text-gray-700 peer-checked:text-red-700">No, Skip</div>
-                                                    <div class="text-xs text-gray-400 mt-1">Maybe next time</div>
+                                                <div class="order-option rounded-xl border-2 border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center hover:bg-gray-50">
+                                                    <i class="fas fa-times text-2xl md:text-3xl mb-2 md:mb-3 text-gray-300 peer-checked:text-red-500 transition-colors"></i>
+                                                    <div class="font-bold text-gray-700 peer-checked:text-red-700 text-sm md:text-base">No, Skip</div>
+                                                    <div class="text-xs text-gray-400 mt-1 hidden sm:block">Maybe next time</div>
                                                 </div>
                                             </label>
                                         </div>
                                     </div>
 
-                                    <div id="preferenceSection" class="mb-6 animate-fade-in">
+                                    <div id="preferenceSection" class="mb-5 md:mb-6 animate-fade-in">
                                         <label class="block text-sm font-semibold text-gray-700 mb-2">Meal Preference</label>
                                         <select id="preference" class="input-field bg-white">
                                             <option value="Normal">Normal</option>
@@ -859,12 +1176,12 @@
                                         </select>
                                     </div>
 
-                                    <div class="mb-6">
+                                    <div class="mb-5 md:mb-6">
                                         <label class="block text-sm font-semibold text-gray-700 mb-2">Allergy Notes (Optional)</label>
                                         <textarea id="allergy" rows="2" class="input-field" placeholder="e.g., Shrimp, Nuts, Dairy..."></textarea>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary w-full py-3 text-lg">
+                                    <button type="submit" class="btn btn-primary w-full md:text-lg md:py-3">
                                         <i class="fas fa-paper-plane mr-2"></i>Submit Order
                                     </button>
                                 </form>
@@ -872,9 +1189,9 @@
 
                             <div id="orderStatusMessage" class="hidden">
                                 <div id="statusContainer" class="status-display">
-                                    <div id="statusIcon" class="text-6xl mb-4">✅</div>
-                                    <h3 id="statusTitle" class="text-2xl font-bold mb-2">Order Submitted!</h3>
-                                    <p id="statusDesc" class="text-gray-600 mb-6">You have successfully ordered for tomorrow.</p>
+                                    <div id="statusIcon" class="text-5xl md:text-6xl mb-4">✅</div>
+                                    <h3 id="statusTitle" class="text-xl md:text-2xl font-bold mb-2">Order Submitted!</h3>
+                                    <p id="statusDesc" class="text-gray-600 mb-5 md:mb-6 text-sm md:text-base">You have successfully ordered.</p>
                                     <button onclick="resetOrderForm()" class="btn btn-secondary">
                                         <i class="fas fa-edit mr-2"></i>Change Order
                                     </button>
@@ -884,7 +1201,7 @@
                     </div>
 
                     <div class="md:col-span-1">
-                        <div class="profile-card mb-6">
+                        <div class="profile-card mb-4 md:mb-6">
                             <h3><i class="fas fa-user-circle mr-2"></i>My Profile</h3>
                             <div class="info-row">
                                 <span class="label">Nama</span>
@@ -901,10 +1218,10 @@
                         </div>
 
                         <div class="card">
-                            <h3 class="font-bold text-gray-800 mb-4 flex items-center">
-                                <i class="fas fa-history mr-2 text-gray-400"></i>Recent History (30 Days)
+                            <h3 class="font-bold text-gray-800 mb-3 md:mb-4 flex items-center text-sm md:text-base">
+                                <i class="fas fa-history mr-2 text-gray-400"></i>Recent History
                             </h3>
-                            <div id="historyList" class="max-h-96 overflow-y-auto pr-2">
+                            <div id="historyList" class="max-h-80 md:max-h-96 overflow-y-auto pr-2">
                                 <div class="text-center text-gray-400 py-4 text-sm">No history found</div>
                             </div>
                         </div>
@@ -914,68 +1231,68 @@
 
             <!-- ADMIN VIEW -->
             <div id="adminView" class="hidden animate-fade-in">
-                <div class="flex gap-6 mb-6 border-b border-gray-200">
-                    <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="pb-4 px-2 font-semibold text-gray-800 border-b-2 border-transparent hover:text-indigo-600 transition-colors admin-tab active-tab flex items-center gap-2">
-                        <i class="fas fa-chart-pie"></i>Order Dashboard
+                <div class="flex gap-4 md:gap-6 mb-4 md:mb-6 border-b border-gray-200">
+                    <button onclick="switchAdminTab('dashboard')" id="tab-dashboard" class="admin-tab active-tab flex items-center gap-1 md:gap-2">
+                        <i class="fas fa-chart-pie"></i><span class="text-sm md:text-base">Order Dashboard</span>
                     </button>
-                    <button onclick="switchAdminTab('users')" id="tab-users" class="pb-4 px-2 font-semibold text-gray-500 border-b-2 border-transparent hover:text-indigo-600 transition-colors admin-tab flex items-center gap-2">
-                        <i class="fas fa-users"></i>User Management
+                    <button onclick="switchAdminTab('users')" id="tab-users" class="admin-tab flex items-center gap-1 md:gap-2 text-gray-500">
+                        <i class="fas fa-users"></i><span class="text-sm md:text-base">User Management</span>
                     </button>
                 </div>
 
                 <div id="adminDashboard" class="block">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
                         <div class="stat-card bg-gradient-to-br from-emerald-400 to-emerald-600">
                             <i class="fas fa-check-circle icon"></i>
                             <div class="relative z-10">
-                                <p class="text-white text-sm font-medium mb-1">Total YES</p>
-                                <h3 class="text-4xl font-bold text-white" id="statYes">0</h3>
-                                <p class="text-white text-xs mt-1">Confirmed orders</p>
+                                <p class="text-white text-xs md:text-sm font-medium mb-1">Total YES</p>
+                                <h3 class="text-2xl md:text-4xl font-bold text-white" id="statYes">0</h3>
+                                <p class="text-white text-xs mt-1 hidden sm:block">Confirmed</p>
                             </div>
                         </div>
                         <div class="stat-card bg-gradient-to-br from-rose-400 to-rose-600">
                             <i class="fas fa-times-circle icon"></i>
                             <div class="relative z-10">
-                                <p class="text-white text-sm font-medium mb-1">Total NO</p>
-                                <h3 class="text-4xl font-bold text-white" id="statNo">0</h3>
-                                <p class="text-white text-xs mt-1">Skipping lunch</p>
+                                <p class="text-white text-xs md:text-sm font-medium mb-1">Total NO</p>
+                                <h3 class="text-2xl md:text-4xl font-bold text-white" id="statNo">0</h3>
+                                <p class="text-white text-xs mt-1 hidden sm:block">Skipping</p>
                             </div>
                         </div>
                         <div class="stat-card bg-gradient-to-br from-amber-400 to-amber-600">
                             <i class="fas fa-clock icon"></i>
                             <div class="relative z-10">
-                                <p class="text-white text-sm font-medium mb-1">Not Filled</p>
-                                <h3 class="text-4xl font-bold text-white" id="statPending">0</h3>
-                                <p class="text-white text-xs mt-1">Awaiting response</p>
+                                <p class="text-white text-xs md:text-sm font-medium mb-1">Not Filled</p>
+                                <h3 class="text-2xl md:text-4xl font-bold text-white" id="statPending">0</h3>
+                                <p class="text-white text-xs mt-1 hidden sm:block">Pending</p>
                             </div>
                         </div>
                         <div class="stat-card bg-gradient-to-br from-violet-400 to-fuchsia-500">
                             <i class="fas fa-users icon"></i>
                             <div class="relative z-10">
-                                <p class="text-white text-sm font-medium mb-1">Total Employees</p>
-                                <h3 class="text-4xl font-bold text-white" id="statTotal">0</h3>
-                                <p class="text-white text-xs mt-1">Active staff</p>
+                                <p class="text-white text-xs md:text-sm font-medium mb-1">Total Staff</p>
+                                <h3 class="text-2xl md:text-4xl font-bold text-white" id="statTotal">0</h3>
+                                <p class="text-white text-xs mt-1 hidden sm:block">Active</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card mb-6">
-                        <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
-                            <div class="flex gap-3 w-full md:w-auto items-center">
-                                <label class="text-sm font-semibold text-gray-700">Date:</label>
+                    <div class="card mb-4 md:mb-6">
+                        <div class="flex flex-col md:flex-row gap-3 md:gap-4 justify-between items-start md:items-center mb-4 md:mb-6">
+                            <div class="flex gap-2 md:gap-3 w-full md:w-auto items-center">
+                                <label class="text-sm font-semibold text-gray-700 whitespace-nowrap">Date:</label>
                                 <input type="date" id="adminDateFilter" class="input-field w-auto" onchange="renderAdminDashboard()">
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="openVendorModal()" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane mr-2"></i>Send to Vendor
+                                <button onclick="openVendorModal()" class="btn btn-primary text-sm md:text-base">
+                                    <i class="fas fa-paper-plane mr-1 md:mr-2"></i><span class="hidden sm:inline">Send to </span>Vendor
                                 </button>
                             </div>
                         </div>
 
-                        <div class="flex gap-2 mb-6">
-                            <button onclick="setOrderSubTab('all')" class="subtab-btn active" data-filter="all">All Orders</button>
-                            <button onclick="setOrderSubTab('yes')" class="subtab-btn" data-filter="yes">YES Only</button>
-                            <button onclick="setOrderSubTab('no')" class="subtab-btn" data-filter="no">NO Only</button>
+                        <div class="flex gap-2 mb-4 md:mb-6 flex-wrap">
+                            <button onclick="setOrderSubTab('all')" class="subtab-btn active" data-filter="all">All</button>
+                            <button onclick="setOrderSubTab('yes')" class="subtab-btn" data-filter="yes">YES</button>
+                            <button onclick="setOrderSubTab('no')" class="subtab-btn" data-filter="no">NO</button>
                         </div>
 
                         <div class="table-container">
@@ -999,17 +1316,28 @@
 
                 <div id="adminUsers" class="hidden">
                     <div class="card">
-                        <div class="flex justify-between items-center mb-6">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-3">
                             <div>
                                 <h2 class="page-title">Employee Management</h2>
-                                <p class="page-subtitle">Manage staff accounts and permissions</p>
+                                <p class="page-subtitle">Manage staff accounts</p>
                             </div>
-                            <button onclick="openUserModal()" class="btn btn-primary">
-                                <i class="fas fa-plus mr-2"></i>Add Employee
-                            </button>
+                            <div class="import-export-container">
+                                <button onclick="exportUsersToExcel()" class="btn btn-success text-sm">
+                                    <i class="fas fa-file-excel mr-1 md:mr-2"></i><span class="hidden sm:inline">Export </span>Excel
+                                </button>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="importFile" accept=".xlsx,.xls,.csv" onchange="importUsersFromExcel(this)">
+                                    <label for="importFile" class="btn btn-info text-sm file-input-label">
+                                        <i class="fas fa-file-import mr-1 md:mr-2"></i><span class="hidden sm:inline">Import </span>Excel
+                                    </label>
+                                </div>
+                                <button onclick="openUserModal()" class="btn btn-primary text-sm">
+                                    <i class="fas fa-plus mr-1 md:mr-2"></i><span class="hidden sm:inline">Add </span>Employee
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="mb-6">
+                        <div class="mb-4 md:mb-6">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 <input type="text" id="userSearch" placeholder="Cari nama atau NIK..." class="input-field pl-10" onkeyup="renderUserTable()">
@@ -1039,26 +1367,26 @@
     <!-- MODALS -->
     <div id="editOrderModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('editOrderModal')">
         <div class="modal-content">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
-                    <i class="fas fa-edit text-violet-600"></i>
+            <div class="flex items-center gap-3 mb-4 md:mb-6">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                    <i class="fas fa-edit text-violet-600 text-sm md:text-base"></i>
                 </div>
-                <h3 class="text-xl font-bold">Edit Order</h3>
+                <h3 class="text-lg md:text-xl font-bold">Edit Order</h3>
             </div>
             <form id="editOrderForm" onsubmit="saveOrderEdit(event)">
                 <input type="hidden" id="editOrderId">
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Karyawan</label>
                     <input type="text" id="editOrderUserName" class="input-field bg-gray-100" disabled>
                 </div>
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Status</label>
                     <select id="editOrderStatus" class="input-field">
                         <option value="true">Yes (Eat)</option>
                         <option value="false">No (Skip)</option>
                     </select>
                 </div>
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Preference</label>
                     <select id="editOrderPref" class="input-field">
                         <option value="Normal">Normal</option>
@@ -1066,18 +1394,18 @@
                         <option value="Vegetarian">Vegetarian</option>
                     </select>
                 </div>
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Allergy</label>
                     <input type="text" id="editOrderAllergy" class="input-field">
                 </div>
-                <div class="mb-6">
+                <div class="mb-4 md:mb-6">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Reason for Change <span class="text-red-500">*</span></label>
-                    <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..." rows="3"></textarea>
+                    <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..." rows="2"></textarea>
                 </div>
-                <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('editOrderModal')" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save mr-2"></i>Save Changes
+                <div class="flex justify-end gap-2 md:gap-3">
+                    <button type="button" onclick="closeModal('editOrderModal')" class="btn btn-secondary text-sm md:text-base">Cancel</button>
+                    <button type="submit" class="btn btn-primary text-sm md:text-base">
+                        <i class="fas fa-save mr-2"></i>Save
                     </button>
                 </div>
             </form>
@@ -1086,38 +1414,38 @@
 
     <div id="userModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('userModal')">
         <div class="modal-content">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
-                    <i class="fas fa-user-plus text-violet-600"></i>
+            <div class="flex items-center gap-3 mb-4 md:mb-6">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                    <i class="fas fa-user-plus text-violet-600 text-sm md:text-base"></i>
                 </div>
-                <h3 id="userModalTitle" class="text-xl font-bold">Add Employee</h3>
+                <h3 id="userModalTitle" class="text-lg md:text-xl font-bold">Add Employee</h3>
             </div>
             <form id="userForm" onsubmit="saveUser(event)">
                 <input type="hidden" id="editUserId">
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">NIK</label>
                     <input type="text" id="userNik" class="input-field" required placeholder="Contoh: 92318">
                 </div>
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Nama Lengkap</label>
                     <input type="text" id="userName" class="input-field" required placeholder="Nama lengkap karyawan">
                 </div>
-                <div class="mb-4">
+                <div class="mb-3 md:mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Role</label>
                     <select id="userRole" class="input-field">
                         <option value="employee">Employee</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-                <div class="mb-6">
+                <div class="mb-4 md:mb-6">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Password</label>
                     <input type="text" id="userPassword" class="input-field" placeholder="Default: sama dengan NIK">
                     <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i>Kosongkan untuk menggunakan NIK sebagai password</p>
                 </div>
-                <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('userModal')" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save mr-2"></i>Save Employee
+                <div class="flex justify-end gap-2 md:gap-3">
+                    <button type="button" onclick="closeModal('userModal')" class="btn btn-secondary text-sm md:text-base">Cancel</button>
+                    <button type="submit" class="btn btn-primary text-sm md:text-base">
+                        <i class="fas fa-save mr-2"></i>Save
                     </button>
                 </div>
             </form>
@@ -1126,17 +1454,17 @@
 
     <div id="vendorModal" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('vendorModal')">
         <div class="modal-content" style="max-width: 600px;">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <i class="fas fa-store text-emerald-600"></i>
+            <div class="flex items-center gap-3 mb-3 md:mb-4">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <i class="fas fa-store text-emerald-600 text-sm md:text-base"></i>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold">Vendor Summary</h3>
-                    <p class="text-sm text-gray-500" id="vendorDateDisplay"></p>
+                    <h3 class="text-lg md:text-xl font-bold">Vendor Summary</h3>
+                    <p class="text-xs md:text-sm text-gray-500" id="vendorDateDisplay"></p>
                 </div>
             </div>
             
-            <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
                 <div class="vendor-stat yes">
                     <div class="number" id="vendorTotalYes">0</div>
                     <div class="label">Total YES</div>
@@ -1152,24 +1480,24 @@
             </div>
             
             <label class="block text-sm font-semibold mb-2 text-gray-700">Generated Text:</label>
-            <textarea id="vendorText" class="input-field font-mono text-sm bg-gray-50 mb-4" rows="8" readonly></textarea>
+            <textarea id="vendorText" class="input-field font-mono text-xs md:text-sm bg-gray-50 mb-4" rows="6" readonly></textarea>
             
-            <div class="grid grid-cols-3 gap-3">
-                <button onclick="copyVendorText()" class="btn btn-secondary">
-                    <i class="fas fa-copy mr-2"></i>Copy
+            <div class="grid grid-cols-3 gap-2 md:gap-3">
+                <button onclick="copyVendorText()" class="btn btn-secondary text-sm md:text-base">
+                    <i class="fas fa-copy md:mr-2"></i><span class="hidden sm:inline">Copy</span>
                 </button>
-                <a id="mailtoLink" href="#" class="btn btn-info text-center">
-                    <i class="fas fa-envelope mr-2"></i>Email
+                <a id="mailtoLink" href="#" class="btn btn-info text-center text-sm md:text-base">
+                    <i class="fas fa-envelope md:mr-2"></i><span class="hidden sm:inline">Email</span>
                 </a>
-                <button onclick="exportCSV()" class="btn btn-primary">
-                    <i class="fas fa-file-csv mr-2"></i>Export CSV
+                <button onclick="exportCSV()" class="btn btn-primary text-sm md:text-base">
+                    <i class="fas fa-file-csv md:mr-2"></i><span class="hidden sm:inline">CSV</span>
                 </button>
             </div>
         </div>
     </div>
 
     <div id="toast">
-        <i class="fas fa-check-circle text-green-500 text-xl"></i>
+        <i class="fas fa-check-circle text-green-500 text-lg md:text-xl"></i>
         <span id="toastMsg">Operation successful</span>
     </div>
 
@@ -1229,14 +1557,12 @@
         ];
 
         const initData = () => {
-            // Cek apakah data sudah ada dan valid (menggunakan NIK)
             const existing = localStorage.getItem('kk_users');
             let isValid = false;
             
             if (existing) {
                 try {
                     const parsed = JSON.parse(existing);
-                    // Cek apakah data pertama punya property 'nik'
                     if (parsed.length > 0 && parsed[0].nik) {
                         isValid = true;
                     }
@@ -1271,20 +1597,29 @@
         let currentAdminTab = 'dashboard';
         let currentOrderFilter = 'all';
 
+        // Fungsi untuk mendapatkan tanggal order target (H+1 atau H+2)
+        function getOrderTargetDate() {
+            const now = new Date();
+            const targetDate = new Date();
+            
+            if (now.getHours() >= 16) {
+                targetDate.setDate(now.getDate() + 2);
+            } else {
+                targetDate.setDate(now.getDate() + 1);
+            }
+            
+            return targetDate;
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             const nik = document.getElementById('loginNik').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            console.log('Login attempt:', nik, password);
-
             const users = getUsers();
-            console.log('Total users:', users.length);
-            
             const user = users.find(u => u.nik === nik && u.password === password && u.isActive);
 
             if (user) {
-                console.log('Login success:', user.name);
                 currentUser = user;
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('appView').classList.remove('hidden');
@@ -1292,7 +1627,6 @@
                 document.getElementById('userNameDisplay').textContent = user.name;
                 document.getElementById('userNikDisplay').textContent = 'NIK: ' + user.nik;
                 
-                // Welcome message with full name
                 const welcomeMsg = `Selamat datang, ${user.name}!`;
                 
                 if (user.role === 'admin') {
@@ -1306,7 +1640,6 @@
                 }
                 showToast(welcomeMsg);
             } else {
-                console.log('Login failed');
                 showToast('NIK atau password salah', 'error');
             }
         }
@@ -1319,35 +1652,17 @@
             showToast('Berhasil logout');
         }
 
-        // Fungsi untuk mendapatkan tanggal order target (H+1 atau H+2)
-        function getOrderTargetDate() {
-            const now = new Date();
-            const targetDate = new Date();
-            
-            // Jika sudah lewat jam 16:00, order untuk H+2 (lusa)
-            // Jika belum lewat jam 16:00, order untuk H+1 (besok)
-            if (now.getHours() >= 16) {
-                targetDate.setDate(now.getDate() + 2);
-            } else {
-                targetDate.setDate(now.getDate() + 1);
-            }
-            
-            return targetDate;
-        }
-
         function initEmployeeView() {
             const targetDate = getOrderTargetDate();
             const now = new Date();
             const isAfterCutoff = now.getHours() >= 16;
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             
-            // Update title based on time
             document.getElementById('orderTitle').textContent = isAfterCutoff ? 'Lunch for Day After Tomorrow' : 'Lunch for Tomorrow';
             document.getElementById('tomorrowDateDisplay').textContent = targetDate.toLocaleDateString('id-ID', options);
             document.getElementById('empName').textContent = currentUser.name;
             document.getElementById('empNik').textContent = currentUser.nik;
             
-            // Update info text based on time
             const infoText = document.getElementById('orderInfoText');
             if (isAfterCutoff) {
                 infoText.textContent = 'Cutoff time (16:00 WIB) has passed. Your order will be for the day after tomorrow (' + targetDate.toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long'}) + ').';
@@ -1385,13 +1700,13 @@
                     statusIcon.textContent = '🍱';
                     statusTitle.textContent = 'Anda ikut makan!';
                     statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Alergi: ${existingOrder.allergy || '-'}`;
-                    statusTitle.className = 'text-2xl font-bold mb-2 text-emerald-600';
+                    statusTitle.className = 'text-xl md:text-2xl font-bold mb-2 text-emerald-600';
                 } else {
                     statusContainer.className = 'status-display cancelled';
                     statusIcon.textContent = '❌';
                     statusTitle.textContent = 'Anda tidak ikut makan';
                     statusDesc.textContent = `Sampai jumpa ${dayLabel}!`;
-                    statusTitle.className = 'text-2xl font-bold mb-2 text-gray-600';
+                    statusTitle.className = 'text-xl md:text-2xl font-bold mb-2 text-gray-600';
                 }
             } else {
                 formContainer.classList.remove('hidden');
@@ -1464,7 +1779,7 @@
                 .slice(0, 10);
 
             if (orders.length === 0) {
-                list.innerHTML = '<div class="text-center text-gray-400 py-8 text-sm"><i class="fas fa-inbox text-3xl mb-2 block"></i>Belum ada riwayat</div>';
+                list.innerHTML = '<div class="text-center text-gray-400 py-6 md:py-8 text-sm"><i class="fas fa-inbox text-2xl md:text-3xl mb-2 block"></i>Belum ada riwayat</div>';
                 return;
             }
 
@@ -1515,7 +1830,6 @@
 
         function renderAdminDashboard() {
             const dateFilter = document.getElementById('adminDateFilter').value;
-            
             const targetDate = dateFilter || getOrderTargetDate().toISOString().split('T')[0];
 
             const users = getUsers().filter(u => u.isActive);
@@ -1581,7 +1895,7 @@
                 <tr>
                     <td class="font-mono font-medium">${u.nik}</td>
                     <td class="font-medium">${u.name}</td>
-                    <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role === 'admin' ? '<i class="fas fa-crown mr-1"></i>Admin' : '<i class="fas fa-user mr-1"></i>Employee'}</span></td>
+                    <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role === 'admin' ? '<i class="fas fa-crown mr-1"></i>Admin' : '<i class="fas fa-user mr-1"></i>Emp'}</span></td>
                     <td><span class="badge badge-green"><i class="fas fa-check-circle mr-1"></i>Active</span></td>
                     <td>
                         <button onclick="editUser('${u.id}')" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button>
@@ -1589,6 +1903,146 @@
                     </td>
                 </tr>
             `).join('');
+        }
+
+        // EXPORT USERS TO EXCEL
+        function exportUsersToExcel() {
+            const users = getUsers().filter(u => u.isActive);
+            
+            // Prepare data for Excel
+            const data = users.map(u => ({
+                'NIK': u.nik,
+                'Nama': u.name,
+                'Role': u.role,
+                'Password': u.password,
+                'Location': u.location,
+                'Status': u.isActive ? 'Active' : 'Inactive'
+            }));
+
+            // Create worksheet
+            const ws = XLSX.utils.json_to_sheet(data);
+            
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 12 },  // NIK
+                { wch: 35 },  // Nama
+                { wch: 12 },  // Role
+                { wch: 15 },  // Password
+                { wch: 12 },  // Location
+                { wch: 10 }   // Status
+            ];
+
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Employees');
+
+            // Generate filename with timestamp
+            const timestamp = new Date().toISOString().split('T')[0];
+            const filename = `Employees_KananKiri_${timestamp}.xlsx`;
+
+            // Download file
+            XLSX.writeFile(wb, filename);
+            showToast('Data berhasil diexport ke Excel!');
+        }
+
+        // IMPORT USERS FROM EXCEL
+        function importUsersFromExcel(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Get first worksheet
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    
+                    // Convert to JSON
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    if (jsonData.length === 0) {
+                        showToast('File Excel kosong!', 'error');
+                        return;
+                    }
+
+                    // Validate required columns
+                    const firstRow = jsonData[0];
+                    const hasNik = 'NIK' in firstRow || 'nik' in firstRow;
+                    const hasNama = 'Nama' in firstRow || 'nama' in firstRow || 'name' in firstRow || 'Name' in firstRow;
+
+                    if (!hasNik || !hasNama) {
+                        showToast('Format Excel tidak valid! Kolom NIK dan Nama wajib ada.', 'error');
+                        return;
+                    }
+
+                    // Process imported data
+                    let importedCount = 0;
+                    let updatedCount = 0;
+                    let users = getUsers();
+
+                    jsonData.forEach(row => {
+                        const nik = String(row['NIK'] || row['nik'] || '').trim();
+                        const name = String(row['Nama'] || row['nama'] || row['Name'] || row['name'] || '').trim();
+                        const role = String(row['Role'] || row['role'] || 'employee').toLowerCase();
+                        const password = String(row['Password'] || row['password'] || nik);
+                        const location = String(row['Location'] || row['location'] || 'Bandung');
+
+                        if (!nik || !name) return;
+
+                        // Check if user already exists
+                        const existingIndex = users.findIndex(u => u.nik === nik);
+                        
+                        if (existingIndex >= 0) {
+                            // Update existing user
+                            users[existingIndex] = {
+                                ...users[existingIndex],
+                                name: name,
+                                role: role === 'admin' ? 'admin' : 'employee',
+                                password: password || nik,
+                                location: location,
+                                isActive: true
+                            };
+                            updatedCount++;
+                        } else {
+                            // Add new user
+                            users.push({
+                                id: 'u_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                                nik: nik,
+                                name: name,
+                                password: password || nik,
+                                location: location,
+                                role: role === 'admin' ? 'admin' : 'employee',
+                                isActive: true,
+                                createdAt: new Date().toISOString()
+                            });
+                            importedCount++;
+                        }
+                    });
+
+                    saveUsers(users);
+                    renderUserTable();
+                    
+                    const msg = `Import berhasil! ${importedCount} user baru, ${updatedCount} user diupdate.`;
+                    showToast(msg);
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showToast('Gagal import file! Pastikan format Excel benar.', 'error');
+                }
+                
+                // Reset file input
+                input.value = '';
+            };
+
+            reader.onerror = function() {
+                showToast('Gagal membaca file!', 'error');
+                input.value = '';
+            };
+
+            reader.readAsArrayBuffer(file);
         }
 
         function openUserModal() {
@@ -1819,10 +2273,10 @@ Terima kasih.`;
             toastMsg.textContent = msg;
             if (type === 'error') {
                 toast.classList.add('error');
-                icon.className = 'fas fa-exclamation-circle text-red-500 text-xl';
+                icon.className = 'fas fa-exclamation-circle text-red-500 text-lg md:text-xl';
             } else {
                 toast.classList.remove('error');
-                icon.className = 'fas fa-check-circle text-green-500 text-xl';
+                icon.className = 'fas fa-check-circle text-green-500 text-lg md:text-xl';
             }
 
             toast.classList.add('show');
