@@ -840,7 +840,7 @@
                         <div class="card mb-6">
                             <div class="flex justify-between items-start mb-6">
                                 <div>
-                                    <h2 class="page-title">Lunch for Tomorrow</h2>
+                                    <h2 class="page-title" id="orderTitle">Lunch Order</h2>
                                     <p class="page-subtitle" id="tomorrowDateDisplay">Loading date...</p>
                                 </div>
                                 <div class="text-right cutoff-warning py-2 px-4">
@@ -851,7 +851,7 @@
                             <div id="orderFormContainer">
                                 <div class="info-box">
                                     <i class="fas fa-info-circle"></i>
-                                    <p>Please submit your lunch preference before 16:00 WIB. After cutoff time, the form will be locked for tomorrow's order.</p>
+                                    <p id="orderInfoText">Please submit your lunch preference before 16:00 WIB. After 16:00 WIB, order will be for the day after tomorrow.</p>
                                 </div>
 
                                 <form id="lunchOrderForm" onsubmit="handleOrderSubmit(event)">
@@ -1354,27 +1354,56 @@
             showToast('Berhasil logout');
         }
 
+        // Fungsi untuk mendapatkan tanggal order target (H+1 atau H+2)
+        function getOrderTargetDate() {
+            const now = new Date();
+            const targetDate = new Date();
+            
+            // Jika sudah lewat jam 16:00, order untuk H+2 (lusa)
+            // Jika belum lewat jam 16:00, order untuk H+1 (besok)
+            if (now.getHours() >= 16) {
+                targetDate.setDate(now.getDate() + 2);
+            } else {
+                targetDate.setDate(now.getDate() + 1);
+            }
+            
+            return targetDate;
+        }
+
         function initEmployeeView() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
+            const targetDate = getOrderTargetDate();
+            const now = new Date();
+            const isAfterCutoff = now.getHours() >= 16;
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('tomorrowDateDisplay').textContent = tomorrow.toLocaleDateString('id-ID', options);
+            
+            // Update title based on time
+            document.getElementById('orderTitle').textContent = isAfterCutoff ? 'Lunch for Day After Tomorrow' : 'Lunch for Tomorrow';
+            document.getElementById('tomorrowDateDisplay').textContent = targetDate.toLocaleDateString('id-ID', options);
             document.getElementById('empName').textContent = currentUser.name;
             document.getElementById('empNik').textContent = currentUser.nik;
+            
+            // Update info text based on time
+            const infoText = document.getElementById('orderInfoText');
+            if (isAfterCutoff) {
+                infoText.textContent = 'Cutoff time (16:00 WIB) has passed. Your order will be for the day after tomorrow (' + targetDate.toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long'}) + ').';
+            } else {
+                infoText.textContent = 'Please submit your lunch preference before 16:00 WIB. After cutoff time, order will be for the day after tomorrow.';
+            }
+            
             checkExistingOrder();
             renderHistory();
         }
 
         function checkExistingOrder() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateStr = tomorrow.toISOString().split('T')[0];
+            const targetDate = getOrderTargetDate();
+            const dateStr = targetDate.toISOString().split('T')[0];
             
             const orders = getOrders();
             const existingOrder = orders.find(o => o.userId === currentUser.id && o.date === dateStr);
 
             const now = new Date();
             const isCutoffPassed = now.getHours() >= 16;
+            const dayLabel = isCutoffPassed ? 'lusa' : 'besok';
 
             const formContainer = document.getElementById('orderFormContainer');
             const statusMsg = document.getElementById('orderStatusMessage');
@@ -1382,17 +1411,6 @@
             const statusTitle = document.getElementById('statusTitle');
             const statusDesc = document.getElementById('statusDesc');
             const statusIcon = document.getElementById('statusIcon');
-
-            if (isCutoffPassed && !existingOrder) {
-                formContainer.classList.add('hidden');
-                statusMsg.classList.remove('hidden');
-                statusContainer.className = 'status-display locked';
-                statusIcon.textContent = '⏰';
-                statusTitle.textContent = 'Cutoff Time Passed';
-                statusDesc.textContent = 'Anda melewati batas waktu 16:00 WIB untuk pesanan besok.';
-                statusTitle.className = 'text-2xl font-bold mb-2 text-amber-600';
-                return;
-            }
 
             if (existingOrder) {
                 formContainer.classList.add('hidden');
@@ -1407,7 +1425,7 @@
                     statusContainer.className = 'status-display cancelled';
                     statusIcon.textContent = '❌';
                     statusTitle.textContent = 'Anda tidak ikut makan';
-                    statusDesc.textContent = 'Sampai jumpa besok!';
+                    statusDesc.textContent = `Sampai jumpa ${dayLabel}!`;
                     statusTitle.className = 'text-2xl font-bold mb-2 text-gray-600';
                 }
             } else {
@@ -1433,9 +1451,8 @@
             const preference = willEat ? document.getElementById('preference').value : 'N/A';
             const allergy = document.getElementById('allergy').value;
 
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateStr = tomorrow.toISOString().split('T')[0];
+            const targetDate = getOrderTargetDate();
+            const dateStr = targetDate.toISOString().split('T')[0];
 
             const orders = getOrders();
             const filteredOrders = orders.filter(o => !(o.userId === currentUser.id && o.date === dateStr));
@@ -1462,15 +1479,8 @@
         }
 
         function resetOrderForm() {
-            const now = new Date();
-            if (now.getHours() >= 16) {
-                showToast('Tidak bisa mengubah pesanan setelah 16:00 WIB', 'error');
-                return;
-            }
-            
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dateStr = tomorrow.toISOString().split('T')[0];
+            const targetDate = getOrderTargetDate();
+            const dateStr = targetDate.toISOString().split('T')[0];
             
             let orders = getOrders();
             orders = orders.filter(o => !(o.userId === currentUser.id && o.date === dateStr));
@@ -1541,11 +1551,7 @@
         function renderAdminDashboard() {
             const dateFilter = document.getElementById('adminDateFilter').value;
             
-            const targetDate = dateFilter || (() => {
-                const t = new Date();
-                t.setDate(t.getDate() + 1);
-                return t.toISOString().split('T')[0];
-            })();
+            const targetDate = dateFilter || getOrderTargetDate().toISOString().split('T')[0];
 
             const users = getUsers().filter(u => u.isActive);
             const orders = getOrders().filter(o => o.date === targetDate);
@@ -1692,7 +1698,8 @@
             const users = getUsers();
             const user = users.find(u => u.id === userId);
             const orders = getOrders();
-            const order = orders.find(o => o.userId === userId && o.date === date);
+            const orderDate = date || getOrderTargetDate().toISOString().split('T')[0];
+            const order = orders.find(o => o.userId === userId && o.date === orderDate);
 
             document.getElementById('editOrderId').value = order ? order.id : 'new';
             document.getElementById('editOrderUserName').value = user.name;
@@ -1702,7 +1709,7 @@
             document.getElementById('editOrderReason').value = '';
             
             document.getElementById('editOrderForm').dataset.userId = userId;
-            document.getElementById('editOrderForm').dataset.date = date;
+            document.getElementById('editOrderForm').dataset.date = orderDate;
 
             document.getElementById('editOrderModal').classList.remove('hidden');
         }
@@ -1762,11 +1769,7 @@
 
         function openVendorModal() {
             const dateFilter = document.getElementById('adminDateFilter').value;
-            const targetDate = dateFilter || (() => {
-                const t = new Date();
-                t.setDate(t.getDate() + 1);
-                return t.toISOString().split('T')[0];
-            })();
+            const targetDate = dateFilter || getOrderTargetDate().toISOString().split('T')[0];
 
             document.getElementById('vendorDateDisplay').textContent = `Tanggal: ${targetDate}`;
 
@@ -1809,11 +1812,7 @@ Terima kasih.`;
 
         function exportCSV() {
             const dateFilter = document.getElementById('adminDateFilter').value;
-            const targetDate = dateFilter || (() => {
-                const t = new Date();
-                t.setDate(t.getDate() + 1);
-                return t.toISOString().split('T')[0];
-            })();
+            const targetDate = dateFilter || getOrderTargetDate().toISOString().split('T')[0];
 
             const users = getUsers().filter(u => u.isActive);
             const orders = getOrders().filter(o => o.date === targetDate);
@@ -1870,9 +1869,9 @@ Terima kasih.`;
         // Initialize saat halaman load
         initData();
         
-        const tmr = new Date();
-        tmr.setDate(tmr.getDate() + 1);
-        document.getElementById('adminDateFilter').value = tmr.toISOString().split('T')[0];
+        // Set default date filter sesuai waktu (H+1 atau H+2)
+        const defaultTargetDate = getOrderTargetDate();
+        document.getElementById('adminDateFilter').value = defaultTargetDate.toISOString().split('T')[0];
 
     </script>
 </body>
