@@ -388,24 +388,6 @@
             opacity: 0.2;
         }
 
-        .debug-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .debug-info code {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-        }
-
         /* Welcome Text */
         .welcome-text {
             font-family: var(--font-display);
@@ -788,7 +770,6 @@
                         <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="password" id="loginPassword" class="input-field pl-10" placeholder="••••••" required>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i>Password default sama dengan NIK (Admin: 123456)</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-full text-lg py-3">
@@ -796,14 +777,6 @@
                 </button>
             </form>
 
-            <div class="debug-info">
-                <p class="font-semibold mb-2"><i class="fas fa-bug mr-2"></i>Test Login:</p>
-                <p class="mb-1">Admin → NIK: <code>92318</code> | Pass: <code>123456</code></p>
-                <p class="mb-3">Karyawan → NIK: <code>92301</code> | Pass: <code>92301</code></p>
-                <button onclick="resetAllData()" class="btn btn-secondary w-full text-sm py-2">
-                    <i class="fas fa-redo mr-2"></i>Reset Data (Kalau Error)
-                </button>
-            </div>
         </div>
     </div>
 
@@ -1254,14 +1227,6 @@
             { nik: '92416', name: 'Sendy Krisnawati', role: 'employee' },
             { nik: '92418', name: 'Lola Juliadrini', role: 'employee' }
         ];
-
-        // Fungsi untuk reset semua data
-        function resetAllData() {
-            localStorage.removeItem('kk_users');
-            localStorage.removeItem('kk_orders');
-            initData();
-            showToast('Data berhasil direset! Silakan refresh halaman.');
-        }
 
         const initData = () => {
             // Cek apakah data sudah ada dan valid (menggunakan NIK)
