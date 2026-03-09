@@ -6,6 +6,8 @@
     <title>Lunch Order | PT Kanan Kiri Mediaworks</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- SheetJS for Excel import/export -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
     
@@ -1181,6 +1183,16 @@
                                         <textarea id="allergy" rows="2" class="input-field" placeholder="e.g., Shrimp, Nuts, Dairy..."></textarea>
                                     </div>
 
+                                    <div id="quantitySection" class="mb-5 md:mb-6 hidden">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Porsi</label>
+                                        <div class="flex items-center gap-3">
+                                            <button type="button" onclick="adjustQuantity(-1)" class="btn btn-secondary w-10 h-10 rounded-full text-lg font-bold p-0">-</button>
+                                            <input type="number" id="orderQuantity" class="input-field text-center font-bold text-lg w-20" value="1" min="1" max="5" readonly>
+                                            <button type="button" onclick="adjustQuantity(1)" class="btn btn-secondary w-10 h-10 rounded-full text-lg font-bold p-0">+</button>
+                                        </div>
+                                        <p class="text-xs text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i>Anda dapat memesan lebih dari 1 porsi (maks: <span id="maxOrderDisplay">5</span>)</p>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary w-full md:text-lg md:py-3">
                                         <i class="fas fa-paper-plane mr-2"></i>Submit Order
                                     </button>
@@ -1245,9 +1257,9 @@
                         <div class="stat-card bg-gradient-to-br from-emerald-400 to-emerald-600">
                             <i class="fas fa-check-circle icon"></i>
                             <div class="relative z-10">
-                                <p class="text-white text-xs md:text-sm font-medium mb-1">Total YES</p>
+                                <p class="text-white text-xs md:text-sm font-medium mb-1">Total Porsi</p>
                                 <h3 class="text-2xl md:text-4xl font-bold text-white" id="statYes">0</h3>
-                                <p class="text-white text-xs mt-1 hidden sm:block">Confirmed</p>
+                                <p class="text-white text-xs mt-1 hidden sm:block">Porsi</p>
                             </div>
                         </div>
                         <div class="stat-card bg-gradient-to-br from-rose-400 to-rose-600">
@@ -1303,6 +1315,7 @@
                                         <th>Nama</th>
                                         <th>Status</th>
                                         <th>Preference</th>
+                                        <th>Qty</th>
                                         <th>Allergy</th>
                                         <th>Submitted</th>
                                         <th>Action</th>
@@ -1351,6 +1364,7 @@
                                         <th>NIK</th>
                                         <th>Nama</th>
                                         <th>Role</th>
+                                        <th>Multi Order</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -1398,6 +1412,10 @@
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Allergy</label>
                     <input type="text" id="editOrderAllergy" class="input-field">
                 </div>
+                <div class="mb-3 md:mb-4">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Jumlah Porsi</label>
+                    <input type="number" id="editOrderQuantity" class="input-field" min="1" max="50" value="1">
+                </div>
                 <div class="mb-4 md:mb-6">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Reason for Change <span class="text-red-500">*</span></label>
                     <textarea id="editOrderReason" class="input-field" required placeholder="Audit trail reason..." rows="2"></textarea>
@@ -1436,6 +1454,17 @@
                         <option value="employee">Employee</option>
                         <option value="admin">Admin</option>
                     </select>
+                </div>
+                <div class="mb-3 md:mb-4">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="userCanMultiOrder" class="w-4 h-4 accent-violet-600" onchange="toggleMaxOrdersField()">
+                        <span class="text-sm font-semibold text-gray-700">Boleh order lebih dari 1 porsi</span>
+                    </label>
+                    <p class="text-xs text-gray-400 mt-1 ml-6"><i class="fas fa-info-circle mr-1"></i>Contoh: Project Manager yang order untuk talent shooting</p>
+                </div>
+                <div id="maxOrdersField" class="mb-3 md:mb-4 hidden">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Maksimal Jumlah Porsi</label>
+                    <input type="number" id="userMaxOrders" class="input-field" min="2" max="50" value="5" placeholder="Maks porsi">
                 </div>
                 <div class="mb-4 md:mb-6">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">Password</label>
@@ -1580,6 +1609,8 @@
                     location: 'Bandung',
                     role: emp.role,
                     isActive: true,
+                    canMultiOrder: false,
+                    maxOrders: 1,
                     createdAt: new Date().toISOString()
                 }));
                 localStorage.setItem('kk_users', JSON.stringify(defaultUsers));
@@ -1596,6 +1627,25 @@
         let currentUser = null;
         let currentAdminTab = 'dashboard';
         let currentOrderFilter = 'all';
+
+        function adjustQuantity(delta) {
+            const input = document.getElementById('orderQuantity');
+            const maxVal = parseInt(input.max) || 5;
+            let newVal = parseInt(input.value) + delta;
+            if (newVal < 1) newVal = 1;
+            if (newVal > maxVal) newVal = maxVal;
+            input.value = newVal;
+        }
+
+        function toggleMaxOrdersField() {
+            const checked = document.getElementById('userCanMultiOrder').checked;
+            const field = document.getElementById('maxOrdersField');
+            if (checked) {
+                field.classList.remove('hidden');
+            } else {
+                field.classList.add('hidden');
+            }
+        }
 
         // Fungsi untuk mendapatkan tanggal order target (H+1 atau H+2)
         function getOrderTargetDate() {
@@ -1657,19 +1707,31 @@
             const now = new Date();
             const isAfterCutoff = now.getHours() >= 16;
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            
+
             document.getElementById('orderTitle').textContent = isAfterCutoff ? 'Lunch for Day After Tomorrow' : 'Lunch for Tomorrow';
             document.getElementById('tomorrowDateDisplay').textContent = targetDate.toLocaleDateString('id-ID', options);
             document.getElementById('empName').textContent = currentUser.name;
             document.getElementById('empNik').textContent = currentUser.nik;
-            
+
             const infoText = document.getElementById('orderInfoText');
             if (isAfterCutoff) {
                 infoText.textContent = 'Cutoff time (16:00 WIB) has passed. Your order will be for the day after tomorrow (' + targetDate.toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long'}) + ').';
             } else {
                 infoText.textContent = 'Please submit your lunch preference before 16:00 WIB. After cutoff time, order will be for the day after tomorrow.';
             }
-            
+
+            // Show quantity section for multi-order users
+            const quantitySection = document.getElementById('quantitySection');
+            if (currentUser.canMultiOrder) {
+                quantitySection.classList.remove('hidden');
+                const maxOrders = currentUser.maxOrders || 5;
+                document.getElementById('orderQuantity').max = maxOrders;
+                document.getElementById('orderQuantity').value = 1;
+                document.getElementById('maxOrderDisplay').textContent = maxOrders;
+            } else {
+                quantitySection.classList.add('hidden');
+            }
+
             checkExistingOrder();
             renderHistory();
         }
@@ -1699,7 +1761,8 @@
                     statusContainer.className = 'status-display';
                     statusIcon.textContent = '🍱';
                     statusTitle.textContent = 'Anda ikut makan!';
-                    statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b><br>Alergi: ${existingOrder.allergy || '-'}`;
+                    const qtyInfo = (existingOrder.quantity && existingOrder.quantity > 1) ? `<br>Jumlah: <b>${existingOrder.quantity} porsi</b>` : '';
+                    statusDesc.innerHTML = `Preference: <b>${existingOrder.preference}</b>${qtyInfo}<br>Alergi: ${existingOrder.allergy || '-'}`;
                     statusTitle.className = 'text-xl md:text-2xl font-bold mb-2 text-emerald-600';
                 } else {
                     statusContainer.className = 'status-display cancelled';
@@ -1716,20 +1779,26 @@
 
         function togglePreference(isYes) {
             const section = document.getElementById('preferenceSection');
+            const quantitySection = document.getElementById('quantitySection');
             if (isYes) {
                 section.classList.remove('hidden');
                 section.classList.add('animate-fade-in');
+                if (currentUser && currentUser.canMultiOrder) {
+                    quantitySection.classList.remove('hidden');
+                }
             } else {
                 section.classList.add('hidden');
+                quantitySection.classList.add('hidden');
             }
         }
 
         function handleOrderSubmit(e) {
             e.preventDefault();
-            
+
             const willEat = document.querySelector('input[name="willEat"]:checked').value === 'true';
             const preference = willEat ? document.getElementById('preference').value : 'N/A';
             const allergy = document.getElementById('allergy').value;
+            const quantity = (willEat && currentUser.canMultiOrder) ? parseInt(document.getElementById('orderQuantity').value) || 1 : 1;
 
             const targetDate = getOrderTargetDate();
             const dateStr = targetDate.toISOString().split('T')[0];
@@ -1744,6 +1813,7 @@
                 willEat: willEat,
                 preference: preference,
                 allergy: allergy,
+                quantity: quantity,
                 submittedAt: new Date().toISOString(),
                 updatedAt: null,
                 updatedBy: null,
@@ -1794,7 +1864,7 @@
                     <div class="history-item">
                         <div>
                             <div class="date"><i class="far fa-calendar-alt mr-2 text-gray-400"></i>${dateStr}</div>
-                            <div class="preference">${o.preference}</div>
+                            <div class="preference">${o.preference}${(o.quantity && o.quantity > 1) ? ' x' + o.quantity : ''}</div>
                         </div>
                         <span class="badge ${statusColor}"><i class="fas ${icon} mr-1"></i>${statusText}</span>
                     </div>
@@ -1844,7 +1914,7 @@
             if (currentOrderFilter === 'yes') filtered = filtered.filter(u => u.order && u.order.willEat);
             if (currentOrderFilter === 'no') filtered = filtered.filter(u => u.order && !u.order.willEat);
 
-            const totalYes = userOrders.filter(u => u.order && u.order.willEat).length;
+            const totalYes = userOrders.filter(u => u.order && u.order.willEat).reduce((sum, u) => sum + (u.order.quantity || 1), 0);
             const totalNo = userOrders.filter(u => u.order && !u.order.willEat).length;
             const totalPending = userOrders.filter(u => !u.order).length;
 
@@ -1865,9 +1935,11 @@
                         <td class="font-mono font-medium">${u.nik}</td>
                         <td>
                             <div class="font-medium text-gray-900">${u.name}</div>
+                            ${u.canMultiOrder ? '<span class="badge badge-purple text-xs"><i class="fas fa-layer-group mr-1"></i>Multi</span>' : ''}
                         </td>
                         <td>${status}</td>
                         <td>${hasOrder ? u.order.preference : '-'}</td>
+                        <td class="font-bold">${hasOrder && u.order.willEat ? (u.order.quantity || 1) : '-'}</td>
                         <td>${hasOrder ? u.order.allergy || '-' : '-'}</td>
                         <td class="text-xs">${hasOrder ? new Date(u.order.submittedAt).toLocaleString('id-ID', {hour: '2-digit', minute:'2-digit', day:'numeric', month:'short'}) : '-'}</td>
                         <td>
@@ -1896,6 +1968,7 @@
                     <td class="font-mono font-medium">${u.nik}</td>
                     <td class="font-medium">${u.name}</td>
                     <td><span class="badge ${u.role === 'admin' ? 'badge-purple' : 'badge-blue'}">${u.role === 'admin' ? '<i class="fas fa-crown mr-1"></i>Admin' : '<i class="fas fa-user mr-1"></i>Emp'}</span></td>
+                    <td>${u.canMultiOrder ? `<span class="badge badge-purple"><i class="fas fa-layer-group mr-1"></i>Maks ${u.maxOrders || 5}</span>` : '<span class="text-gray-400 text-xs">-</span>'}</td>
                     <td><span class="badge badge-green"><i class="fas fa-check-circle mr-1"></i>Active</span></td>
                     <td>
                         <button onclick="editUser('${u.id}')" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button>
@@ -1916,6 +1989,8 @@
                 'Role': u.role,
                 'Password': u.password,
                 'Location': u.location,
+                'Multi Order': u.canMultiOrder ? 'Ya' : 'Tidak',
+                'Maks Porsi': u.canMultiOrder ? (u.maxOrders || 5) : 1,
                 'Status': u.isActive ? 'Active' : 'Inactive'
             }));
 
@@ -1929,6 +2004,8 @@
                 { wch: 12 },  // Role
                 { wch: 15 },  // Password
                 { wch: 12 },  // Location
+                { wch: 12 },  // Multi Order
+                { wch: 12 },  // Maks Porsi
                 { wch: 10 }   // Status
             ];
 
@@ -1989,6 +2066,9 @@
                         const role = String(row['Role'] || row['role'] || 'employee').toLowerCase();
                         const password = String(row['Password'] || row['password'] || nik);
                         const location = String(row['Location'] || row['location'] || 'Bandung');
+                        const multiOrderRaw = String(row['Multi Order'] || row['multi order'] || '').toLowerCase();
+                        const canMultiOrder = multiOrderRaw === 'ya' || multiOrderRaw === 'yes' || multiOrderRaw === 'true';
+                        const maxOrders = parseInt(row['Maks Porsi'] || row['maks porsi'] || row['Max Orders'] || 1) || 1;
 
                         if (!nik || !name) return;
 
@@ -2003,6 +2083,8 @@
                                 role: role === 'admin' ? 'admin' : 'employee',
                                 password: password || nik,
                                 location: location,
+                                canMultiOrder: canMultiOrder,
+                                maxOrders: canMultiOrder ? maxOrders : 1,
                                 isActive: true
                             };
                             updatedCount++;
@@ -2016,6 +2098,8 @@
                                 location: location,
                                 role: role === 'admin' ? 'admin' : 'employee',
                                 isActive: true,
+                                canMultiOrder: canMultiOrder,
+                                maxOrders: canMultiOrder ? maxOrders : 1,
                                 createdAt: new Date().toISOString()
                             });
                             importedCount++;
@@ -2049,6 +2133,9 @@
             document.getElementById('userModalTitle').textContent = 'Tambah Karyawan';
             document.getElementById('userForm').reset();
             document.getElementById('editUserId').value = '';
+            document.getElementById('userCanMultiOrder').checked = false;
+            document.getElementById('userMaxOrders').value = 5;
+            toggleMaxOrdersField();
             document.getElementById('userModal').classList.remove('hidden');
         }
 
@@ -2063,7 +2150,10 @@
             document.getElementById('userName').value = u.name;
             document.getElementById('userRole').value = u.role;
             document.getElementById('userPassword').value = u.password;
-            
+            document.getElementById('userCanMultiOrder').checked = !!u.canMultiOrder;
+            document.getElementById('userMaxOrders').value = u.maxOrders || 5;
+            toggleMaxOrdersField();
+
             document.getElementById('userModal').classList.remove('hidden');
         }
 
@@ -2074,13 +2164,15 @@
             const name = document.getElementById('userName').value;
             const role = document.getElementById('userRole').value;
             const password = document.getElementById('userPassword').value || nik;
+            const canMultiOrder = document.getElementById('userCanMultiOrder').checked;
+            const maxOrders = canMultiOrder ? parseInt(document.getElementById('userMaxOrders').value) || 5 : 1;
 
             let users = getUsers();
 
             if (id) {
                 const idx = users.findIndex(u => u.id === id);
                 if (idx !== -1) {
-                    users[idx] = { ...users[idx], nik, name, role, password };
+                    users[idx] = { ...users[idx], nik, name, role, password, canMultiOrder, maxOrders };
                 }
             } else {
                 if (users.find(u => u.nik === nik)) {
@@ -2091,6 +2183,7 @@
                     id: 'u_' + Date.now(),
                     nik, name, password, location: 'Bandung', role,
                     isActive: true,
+                    canMultiOrder, maxOrders,
                     createdAt: new Date().toISOString()
                 });
             }
@@ -2125,6 +2218,7 @@
             document.getElementById('editOrderStatus').value = order ? (order.willEat ? 'true' : 'false') : 'true';
             document.getElementById('editOrderPref').value = order ? order.preference : 'Normal';
             document.getElementById('editOrderAllergy').value = order ? order.allergy : '';
+            document.getElementById('editOrderQuantity').value = order ? (order.quantity || 1) : 1;
             document.getElementById('editOrderReason').value = '';
             
             document.getElementById('editOrderForm').dataset.userId = userId;
@@ -2141,6 +2235,7 @@
             const willEat = document.getElementById('editOrderStatus').value === 'true';
             const preference = document.getElementById('editOrderPref').value;
             const allergy = document.getElementById('editOrderAllergy').value;
+            const quantity = parseInt(document.getElementById('editOrderQuantity').value) || 1;
             const reason = document.getElementById('editOrderReason').value;
 
             if (!reason) {
@@ -2155,7 +2250,7 @@
                 if (idx !== -1) {
                     orders[idx] = {
                         ...orders[idx],
-                        willEat, preference, allergy,
+                        willEat, preference, allergy, quantity,
                         updatedAt: new Date().toISOString(),
                         updatedBy: currentUser.name,
                         updateReason: reason
@@ -2164,7 +2259,7 @@
             } else {
                 orders.push({
                     id: 'ord_' + Date.now(),
-                    userId, date, willEat, preference, allergy,
+                    userId, date, willEat, preference, allergy, quantity,
                     submittedAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     updatedBy: currentUser.name,
@@ -2193,14 +2288,21 @@
             document.getElementById('vendorDateDisplay').textContent = `Tanggal: ${targetDate}`;
 
             const orders = getOrders().filter(o => o.date === targetDate && o.willEat);
-            
-            const totalYes = orders.length;
-            const noSpicy = orders.filter(o => o.preference === 'Tidak Pedas').length;
-            const veg = orders.filter(o => o.preference === 'Vegetarian').length;
+
+            const totalYes = orders.reduce((sum, o) => sum + (o.quantity || 1), 0);
+            const noSpicy = orders.filter(o => o.preference === 'Tidak Pedas').reduce((sum, o) => sum + (o.quantity || 1), 0);
+            const veg = orders.filter(o => o.preference === 'Vegetarian').reduce((sum, o) => sum + (o.quantity || 1), 0);
 
             document.getElementById('vendorTotalYes').textContent = totalYes;
             document.getElementById('vendorNoSpicy').textContent = noSpicy;
             document.getElementById('vendorVeg').textContent = veg;
+
+            // Build detail lines for multi-order users
+            const users = getUsers();
+            const multiOrderDetails = orders.filter(o => (o.quantity || 1) > 1).map(o => {
+                const user = users.find(u => u.id === o.userId);
+                return `  * ${user ? user.name : 'Unknown'}: ${o.quantity} porsi (${o.preference})`;
+            });
 
             const text = `ORDER MAKAN SIANG - PT Kanan Kiri Mediaworks
 Tanggal: ${targetDate}
@@ -2210,7 +2312,7 @@ Detail:
 - Normal: ${totalYes - noSpicy - veg} pax
 - Tidak Pedas: ${noSpicy} pax
 - Vegetarian: ${veg} pax
-
+${multiOrderDetails.length > 0 ? '\nMulti-order:\n' + multiOrderDetails.join('\n') : ''}
 Catatan: Mohon antar ke kantor pukul 12:00 WIB.
 
 Terima kasih.`;
@@ -2237,16 +2339,17 @@ Terima kasih.`;
             const orders = getOrders().filter(o => o.date === targetDate);
             
             let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-            csvContent += "NIK,Nama,Status,Preference,Alergi\n";
+            csvContent += "NIK,Nama,Status,Preference,Qty,Alergi\n";
 
             users.forEach(u => {
                 const order = orders.find(o => o.userId === u.id);
                 const row = [
                     u.nik,
-                    u.name,
+                    `"${u.name.replace(/"/g, '""')}"`,
                     order ? (order.willEat ? 'YES' : 'NO') : 'PENDING',
                     order ? order.preference : '',
-                    order ? (order.allergy || '') : ''
+                    order && order.willEat ? (order.quantity || 1) : '',
+                    order ? `"${(order.allergy || '').replace(/"/g, '""')}"` : ''
                 ].join(",");
                 csvContent += row + "\n";
             });
